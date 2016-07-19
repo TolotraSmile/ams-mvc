@@ -16,29 +16,18 @@ ini_set('display_errors', 1);
 
 $db = new \App\Model\MissionModel(\App\App::getInstance()->getPdo());
 $missions = $db->getMissions();
+
+$table = new \App\Helpers\TableHelper($missions,
+    [
+        'ID' => 'ENTREPRISE_DENOMINATION_SOCIAL',
+        'Date d\'exercice' => ['MISSION_DATE_DEBUT', 'MISSION_DATE_CLOTURE'],
+        'Année' => 'MISSION_ANNEE'
+    ]
+);
+echo $table->getTable();
 $i = 0;
 ?>
-<table class="u-full-width" style="margin: 20px;">
-    <thead>
-    <tr>-
-        <th>ID</th>
-        <th>Date d'exercice</th>
-        <th>Type</th>
-        <th>Année</th>
-        <th>Nom</th>
-    </tr>
-    </thead>
-    <tbody>
-    <?php while ($i < count($missions)) : ?>
-        <tr>
-            <td><?= $i + 1 ?></td>
-            <td><?= $missions[$i]->MISSION_DATE_DEBUT . ' au ' . $missions[$i]->MISSION_DATE_CLOTURE ?></td>
-            <td><?= $missions[$i]->MISSION_TYPE ?></td>
-            <td><?= $missions[$i]->MISSION_ANNEE ?></td>
-            <td><?= $missions[$i]->ENTREPRISE_DENOMINATION_SOCIAL . " - " . $missions[$i]->ENTREPRISE_RAISON_SOCIAL ?></td>
-        </tr>
-        <?php $i++; ?>
-    <?php endwhile; ?>
-</table>
+
+<code>function</code>
 </body>
 </html>

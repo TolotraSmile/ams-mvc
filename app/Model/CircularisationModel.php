@@ -1,26 +1,24 @@
 <?php
-
 /**
  * Created by Tolotra Raharison
  * GitHub : tolotrasmile.github.io
- * At : 18/07/2016 15:54
+ * At : 19/07/2016 10:32
  * Copyright etech consulting 2016
  */
 
 namespace App\Model;
 
+
 use App\Database\PdoDatabase;
 
-class MissionModel
+class CircularisationModel
 {
-    private $database;
-
     public function __construct(PdoDatabase $database)
     {
         $this->database = $database;
     }
 
-    public function getMissions()
+    public function getFournisseurs()
     {
         $sql = "SELECT * 
                 FROM tab_mission
