@@ -2,6 +2,8 @@
 
 namespace App\Database;
 
+use App\App;
+
 class PdoDatabase
 {
     private $pdo;
@@ -14,7 +16,10 @@ class PdoDatabase
     public function query($sql)
     {
         $result = $this->pdo->query($sql, \PDO::FETCH_OBJ);
-        return $result->fetchAll(\PDO::FETCH_OBJ);
+        if ($result) {
+            return $result->fetchAll(\PDO::FETCH_OBJ);
+        }
+        return false;
     }
 
 }

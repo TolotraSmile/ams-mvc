@@ -10,6 +10,7 @@
 namespace App\Model;
 
 use App\Database\PdoDatabase;
+use App\Helpers\Debugger;
 
 class MissionModel
 {
@@ -29,4 +30,22 @@ class MissionModel
                 ORDER BY MISSION_ID DESC";
         return $this->database->query($sql);
     }
+
+    public function getFournisseurs($idmission = [])
+    {
+        try {
+            $sql = 'SELECT *
+                FROM tab_bal_aux
+                LEFT JOIN tab_circularisation_fichier
+                ON tab_bal_aux.BAL_AUX_ID = tab_circularisation_fichier.bal_aux_id';
+            if (is_array($idmission) && !empty($idmission)) {
+                $sql .= ' WHERE MISSION_ID IN (' . implode(',', $idmission) . ')';
+            } else {
+                $sql .= ' WHERE MISSION_ID = ' . $idmission;
+            }
+            return $this->database->query($sql);
+        } catch (\Exception $e) {
+        }
+    }
+
 }

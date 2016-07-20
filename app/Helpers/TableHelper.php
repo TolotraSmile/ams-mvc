@@ -21,19 +21,37 @@ class TableHelper
     private $keys;
 
     /**
+     * @var string
+     */
+    private $indexName;
+    /**
+     * @var array
+     */
+    private $extras;
+
+    private $primaryKey;
+
+    /**
      * TableHelper constructor.
      * @param array $data
      * @param array $keys
+     * @param string $indexName
+     * @param array $extras
+     * @param null $primaryKey
      */
-    public function __construct($data = [], $keys = [])
+    public function __construct($data = [], $keys = [], $indexName = '', $extras = [], $primaryKey = null)
     {
         $this->data = $data;
         $this->keys = $keys;
+        $this->indexName = $indexName;
+        $this->extras = $extras;
+        $this->extras[] = ['class' => "u-full-width"];
+        $this->primaryKey = $primaryKey;
     }
 
     private function getHead()
     {
-        $head = '';
+        $head = ($this->indexName != '') ? $this->surround($this->indexName, 'th') : '';
         foreach ($this->keys as $key => $value) {
             $head .= $this->surround($key, 'th');
         }
@@ -67,9 +85,12 @@ class TableHelper
     public function getTable()
     {
         $table = '';
-
+        $counter = 1;
         foreach ($this->data as $item) {
             $cells = '';
+            if ($this->indexName != '') {
+                $cells .= $this->surround($counter . '', 'td');
+            }
             foreach ($this->keys as $key => $value) {
                 if (is_string($value)) {
                     $cells .= $this->surround($item->$value, 'td');
@@ -81,13 +102,19 @@ class TableHelper
                     $cells .= $this->surround($sub, 'td');
                 }
             }
-            $cells = $this->surround($cells, 'tr');
+            $counter++;
+            $attr = [];
+            $pk = $this->primaryKey;
+
+            if ($pk != null) {
+                $attr = ['id' => $item->$pk];
+            }
+            $cells = $this->surround($cells, 'tr', $attr);
             $table .= $cells;
         }
 
         $table = $this->surround($table, 'tbody');
 
-        $attributes = ['class' => "u-full-width", 'style' => 'margin: 20px;'];
-        return $this->surround($this->getHead() . $table, 'table', $attributes);
+        return $this->surround($this->getHead() . $table, 'table', $this->extras);
     }
 }
