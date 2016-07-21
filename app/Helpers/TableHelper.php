@@ -9,6 +9,8 @@
 
 namespace App\Helpers;
 
+use App\Helpers\Facades\TableFacade;
+
 class TableHelper
 {
     /**
@@ -27,26 +29,36 @@ class TableHelper
     /**
      * @var array
      */
-    private $extras;
+    private $attributes;
 
     private $primaryKey;
+    /**
+     * @var array
+     */
+    private $extras;
+
+    use TableFacade;
 
     /**
      * TableHelper constructor.
      * @param array $data
      * @param array $keys
      * @param string $indexName
-     * @param array $extras
+     * @param array $attributes
      * @param null $primaryKey
+     * @param array $extras
      */
-    public function __construct($data = [], $keys = [], $indexName = '', $extras = [], $primaryKey = null)
+    public function __construct($data = [], $keys = [], $indexName = '', $attributes = [], $primaryKey = null, $extras = [])
     {
         $this->data = $data;
-        $this->keys = $keys;
+        $this->keys = array_merge($keys, $extras);
         $this->indexName = $indexName;
-        $this->extras = $extras;
-        $this->extras[] = ['class' => "u-full-width"];
+        $this->attributes = $attributes;
+        $this->attributes[] = ['class' => "u-full-width"];
         $this->primaryKey = $primaryKey;
+        $this->extras = $extras;
+
+
     }
 
     private function getHead()
@@ -59,29 +71,6 @@ class TableHelper
         return $this->surround($head, 'thead');
     }
 
-    private function surround($item, $tag, $atributes = [])
-    {
-        $attr = $this->getAttributes($atributes);
-        return "<$tag $attr>$item</$tag>";
-    }
-
-    private function getAttributes($attributes = [])
-    {
-        if (empty($attributes)) return '';
-        $attr = ' ';
-        foreach ($attributes as $key => $value) {
-            if (is_string($key)) {
-                if (is_array($value)) {
-                    $attr .= "$key=\"" . implode(' ', $value) . "\"";
-                } else {
-                    $attr .= "$key=\"$value\"";
-                }
-            }
-            $attr .= ' ';
-        }
-        return $attr;
-    }
-
     public function getTable()
     {
         $table = '';
@@ -91,7 +80,15 @@ class TableHelper
             if ($this->indexName != '') {
                 $cells .= $this->surround($counter . '', 'td');
             }
+
+            $cell = 0;
+
             foreach ($this->keys as $key => $value) {
+
+                if (isset($this->extras) && isset($this->extras[$key])) {
+                    $cells .= $this->surround($this->extras[$cell], 'td');
+                }
+
                 if (is_string($value)) {
                     $cells .= $this->surround($item->$value, 'td');
                 } else {
@@ -101,6 +98,7 @@ class TableHelper
                     }
                     $cells .= $this->surround($sub, 'td');
                 }
+                $cell++;
             }
             $counter++;
             $attr = [];
@@ -115,6 +113,6 @@ class TableHelper
 
         $table = $this->surround($table, 'tbody');
 
-        return $this->surround($this->getHead() . $table, 'table', $this->extras);
+        return $this->surround($this->getHead() . $table, 'table', $this->attributes);
     }
 }

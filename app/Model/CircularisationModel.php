@@ -30,6 +30,9 @@ class CircularisationModel
                 FROM tab_bal_aux
                 LEFT JOIN tab_circularisation_fichier
                 ON tab_bal_aux.BAL_AUX_ID = tab_circularisation_fichier.bal_aux_id';
+        if (empty($idmission) || $idmission == '') {
+            return $this->database->query($sql);
+        }
         if (is_array($idmission) && !empty($idmission)) {
             $sql .= ' WHERE MISSION_ID IN (' . implode(',', $idmission) . ')';
         } else {
@@ -42,7 +45,7 @@ class CircularisationModel
      * @param array $mission
      * @return array
      */
-    public function getCircularisation($mission = [])
+    public function getFournisseursInputs($mission = [])
     {
         $fournisseurs = $this->getFournisseurs($mission);
         $data = [];
@@ -50,7 +53,13 @@ class CircularisationModel
             $value->input = '<input type="checkbox" value="" style="margin: 0 0 0 20px;">';
             $data[] = $value;
         }
-
         return $data;
     }
+
+    public function getCircularisation($balAuxId = [])
+    {
+        $fournisseurs = $this->getFournisseurs($balAuxId);
+        return $fournisseurs;
+    }
+
 }

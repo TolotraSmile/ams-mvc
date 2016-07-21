@@ -8,23 +8,19 @@
 
 namespace App\Controllers;
 
-
-use App\App;
 use App\Helpers\TableHelper;
 use App\Model\CircularisationModel;
 use App\Model\MissionModel;
 
 class MissionController extends Controller
 {
-
-    private $models = [];
-    private $database;
-
     public function __construct()
     {
-        $this->database = App::getInstance()->getPdo();
-        $this->models['mission'] = new MissionModel($this->database);
-        $this->models['circularisation'] = new CircularisationModel($this->database);
+        parent::__construct();
+        $this->models = [
+            'mission' => new MissionModel($this->database),
+            'circularisation' => new CircularisationModel($this->database)
+        ];
     }
 
     public function index()
@@ -36,9 +32,27 @@ class MissionController extends Controller
 
     public function fournisseurs($missions)
     {
-        $result = $this->models['circularisation']->getCircularisation($missions);
+        $result = $this->models['circularisation']->getFournisseursInputs($missions);
         $keys = ['' => 'input', 'Compte' => 'BAL_AUX_COMPTE', 'Code Tiers' => 'BAL_AUX_CODE', 'Annexe' => 'BAL_AUX_LIBELLE', 'Solde' => 'BAL_AUX_SOLDE'];
-        $table = new TableHelper($result, $keys, '', ['style' => 'margin-bottom: 120px;'], 'BAL_AUX_ID');
+        $table = new TableHelper($result, $keys, '', ['style' => 'margin-bottom: 100px;'], 'BAL_AUX_ID');
         echo $table->getTable();
+    }
+
+    public function circularisation($missions)
+    {
+        $result = $this->models['circularisation']->getCircularisation($missions);
+        $keys = [
+            '' => 'input',
+            'Compte' => 'BAL_AUX_COMPTE',
+            'Code Tiers' => 'BAL_AUX_CODE',
+            'Annexe' => 'BAL_AUX_LIBELLE',
+            'Solde' => 'BAL_AUX_SOLDE',
+            'Nom' => 'nom',
+            'Coordonnées' => 'coordonnee',
+            'Génerer' => 'button'
+        ];
+        $table = new TableHelper($result, $keys, '', ['style' => 'margin-bottom: 100px;'], 'BAL_AUX_ID');
+        echo $table->getTable();
+
     }
 }

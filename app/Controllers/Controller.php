@@ -9,7 +9,15 @@
 namespace App\Controllers;
 
 
+use App\App;
+
 class Controller
 {
-
+    protected $models = [];
+    protected $database;
+    
+    public function __construct()
+    {
+        $this->database = App::getInstance()->getPdo();
+    }
 }
