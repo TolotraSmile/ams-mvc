@@ -10,6 +10,7 @@ require '../vendor/autoload.php';
 
 if (isset($_GET['page']) && !empty($_GET['page'])) {
 
+    $result = [];
     $config = require 'Config/mapping.php';
 
     $url = explode('@', $_GET['page']);
@@ -17,11 +18,12 @@ if (isset($_GET['page']) && !empty($_GET['page'])) {
 
     if (isset($config['controllers'][$url[0]])) {
         $controller = new $config['controllers'][$url[0]]();
+        $result = $controller->$method(json_decode($_POST['data']));
     } else {
         header('Access Denied', true, 500);
     }
 
-    print json_encode([$controller, $method]);
+    print json_encode([$controller, $result, json_decode($_POST['data'])]);
 
 } else {
     header('Not Found', true, 404);

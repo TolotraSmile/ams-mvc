@@ -51,16 +51,17 @@ class TableHelper
     public function __construct($data = [], $keys = [], $indexName = '', $attributes = [], $primaryKey = null, $extras = [])
     {
         $this->data = $data;
-        $this->keys = array_merge($keys, $extras);
+        $this->keys = $keys;
         $this->indexName = $indexName;
         $this->attributes = $attributes;
         $this->attributes[] = ['class' => "u-full-width"];
         $this->primaryKey = $primaryKey;
         $this->extras = $extras;
-
-
     }
 
+    /**
+     * @return string
+     */
     private function getHead()
     {
         $head = ($this->indexName != '') ? $this->surround($this->indexName, 'th') : '';
@@ -71,36 +72,49 @@ class TableHelper
         return $this->surround($head, 'thead');
     }
 
-    public function getTable()
+    private $header;
+
+    /**
+     * @param $header
+     */
+    public function setHeader($header)
     {
-        $table = '';
-        $counter = 1;
-        foreach ($this->data as $item) {
-            $cells = '';
-            if ($this->indexName != '') {
-                $cells .= $this->surround($counter . '', 'td');
-            }
+        $this->header = $header;
+    }
 
-            $cell = 0;
+    /**
+     * @param $data
+     * @param $attributes
+     * @return string
+     */
+    private function getRow($data, $attributes = [])
+    {
+        $cells = '';
 
-            foreach ($this->keys as $key => $value) {
+        $columns = array_merge(array_keys($this->extras), $this->keys);
+        $counter = 0;
+        foreach ($columns as $key => $value) {
 
-                if (isset($this->extras) && isset($this->extras[$key])) {
-                    $cells .= $this->surround($this->extras[$cell], 'td');
-                }
-
-                if (is_string($value)) {
-                    $cells .= $this->surround($item->$value, 'td');
-                } else {
-                    $sub = '';
-                    foreach ($value as $subvalue) {
-                        $sub .= $item->$subvalue . ' - ';
-                    }
-                    $cells .= $this->surround($sub, 'td');
-                }
-                $cell++;
+            if (isset($data->$value)) {
+                $cells .= $this->surround($data->$value, 'td', $attributes);
+            } else {
+                $cells .= $this->surround($this->extras[$value], 'td', $attributes);
             }
             $counter++;
+        }
+        return $cells;
+    }
+
+    /**
+     * @return string
+     */
+    public
+    function getTable()
+    {
+        $table = '';
+        foreach ($this->data as $item) {
+            $cells = $this->getRow($item);
+
             $attr = [];
             $pk = $this->primaryKey;
 

@@ -13,45 +13,86 @@ use App\Helpers\Facades\TableFacade;
 
 class DataTableHelper
 {
-    private $data;
-    private $keys;
-    private $extras;
 
     use TableFacade;
+    private $data;
+    private $keys;
+    private $header;
+    private $primaryKey;
+    private $attributes;
 
     /**
      * DataTableHelper constructor.
      * @param $data
      * @param $keys
-     * @param $extras
+     * @param $header
+     * @param $primaryKey
+     * @param $attributes
+     * @internal param $headers
+     * @internal param $extras
      */
-    public function __construct($data, $keys, $extras)
+    public function __construct($data, $keys, $header, $attributes, $primaryKey)
     {
         $this->data = $data;
         $this->keys = $keys;
-        $this->extras = $this->setExtra($extras);
+        $this->header = $header;
+        $this->primaryKey = $primaryKey;
+        $this->attributes = $attributes;
     }
 
-    public function setExtra($extras = [])
+    /**
+     * @param $data
+     * @param $attributes
+     * @return string
+     */
+    private function getRow($data, $attributes = [])
     {
-        if (isset($extras) && is_array($extras) && !empty($extras)) {
-            $this->extras = $extras;
-        }
-    }
-
-    public function setRow($rowdata, $others, $attributes)
-    {
-        if (empty($rowdata) && empty($others)) return '';
-        $row = '';
-        $index = 0;
-        foreach ($rowdata as $item) {
-            if (isset($index) && isset($others[$index])) {
-                $row .= $this->surround($others[$index], 'tb', $attributes);
+        $cells = '';
+        foreach ($this->keys as $key => $value) {
+            if (isset($data->$value)) {
+                $cells .= $this->surround($data->$value, 'td', $attributes);
+            } else {
+                $cells .= $this->surround($value, 'td', $attributes);
             }
-            $row .= $this->surround($item, 'tb', $attributes);
         }
-        return $row;
+        return $cells;
     }
 
+    public function getTable()
+    {
+
+        $table = '';
+        foreach ($this->data as $item) {
+            $cells = $this->getRow($item);
+
+            $attr = [];
+
+            $pk = $this->primaryKey;
+
+            if ($pk != null) {
+                $attr = ['id' => $item->$pk];
+            }
+
+            $cells = $this->surround($cells, 'tr', $attr);
+            $table .= $cells;
+        }
+
+        $table = $this->surround($table, 'tbody');
+
+        return $this->surround($this->getHeader() . $table, 'table', $this->attributes);
+    }
+
+    /**
+     * @return string
+     */
+    private function getHeader()
+    {
+        $head = '';
+        foreach ($this->header as $key) {
+            $head .= $this->surround($key, 'th');
+        }
+        $head = $this->surround($head, 'tr');
+        return $this->surround($head, 'thead');
+    }
 
 }

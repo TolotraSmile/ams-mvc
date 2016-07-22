@@ -47,24 +47,31 @@ ini_set('display_errors', 1); ?>
 
 <script type="application/javascript" src="public/js/ajax.js"></script>
 <script>
+
     // Circularisation
-    (function (document) {
-        var
-            save = document.querySelector('#frns-save');
-        var
-            selected = [];
+    (function (document,window) {
+        var save = document.querySelector('#frns-save');
+        var selected = [];
         save.addEventListener('click',function () {
             selected = [];
 
-            var
-                formData = new FormData();
-            var
-                $inputs = document.querySelectorAll('input[type="checkbox"]:checked');
+            var formData = new FormData();
+            var $inputs = document.querySelectorAll('input[type="checkbox"]:checked');
             $inputs.forEach(function (element) {
                 var row = element.parentNode.parentNode;
+                //var $name = row.querySelectorAll('input[type="text"]')[0];
+                //var $adresse = row.querySelectorAll('input[type="text"]')[1];
+                //console.log($name.value);
+//                {
+//                    id: row.getAttribute('id'),
+//                        name: $name.value,
+//                    adresse: $adresse.value
+//                }
                 selected.push(row.getAttribute('id'));
             });
-            formData.append('frns-ids',selected);
+
+            console.log(selected);
+            formData.append('data',JSON.stringify(selected));
 
             var request = window.getHttpRequest();
             request.open('POST',window.getUrl('circularisation','circulariser'));
@@ -76,9 +83,25 @@ ini_set('display_errors', 1); ?>
                         console.log(request.responseText);
                     }
                 }
+                request.close();
             }
         });
-    })(document);
+
+        window.generate = function (context) {
+            var node = context.parentNode.parentNode;
+            var inputs = node.querySelectorAll('input[type="text"]');
+            if (inputs) {
+                var $name = inputs[0].value;
+                var $adresse = inputs[1].value;
+                console.log($name,$adresse);
+            }
+        }
+
+        window.openFile = function (context) {
+            console.log(context.getAttribute('src'));
+        }
+
+    })(document,window);
 </script>
 
 </html>

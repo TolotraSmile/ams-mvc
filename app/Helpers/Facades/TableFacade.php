@@ -9,6 +9,8 @@
 namespace App\Helpers\Facades;
 
 
+use App\Helpers\Debugger;
+
 trait TableFacade
 {
     public function surround($item, $tag, $atributes = [])
@@ -17,9 +19,21 @@ trait TableFacade
         return "<$tag $attr>$item</$tag>";
     }
 
+    public function surrounds($items, $tag, $atributes = [])
+    {
+        if (is_array($items)) {
+            $ret = '';
+            foreach ($items as $key) {
+                $ret .= $this->surround($key, $tag, $atributes);
+            }
+            return $ret;
+        }
+        return $this->surround($items, $tag, $atributes);
+    }
+
     public function getAttributes($attributes = [])
     {
-        if (empty($attributes)) return '';
+        if (empty($attributes) && is_array($attributes)) return '';
         $attr = ' ';
         foreach ($attributes as $key => $value) {
             if (is_string($key)) {
