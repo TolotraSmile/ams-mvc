@@ -49,11 +49,18 @@ class DataTableHelper
     {
         $cells = '';
         foreach ($this->keys as $key => $value) {
-            if (isset($data->$value)) {
-                $cells .= $this->surround($data->$value, 'td', $attributes);
+
+            if (is_array($value)) {
+                $attributes[] = $value[1];
+                $cells .= $this->surround($data->$value[0], 'td', $attributes);
             } else {
-                $cells .= $this->surround($value, 'td', $attributes);
+                if (isset($data->$value)) {
+                    $cells .= $this->surround($data->$value, 'td', $attributes);
+                } else {
+                    $cells .= $this->surround($value, 'td', $attributes);
+                }
             }
+
         }
         return $cells;
     }

@@ -26,10 +26,8 @@ ini_set('display_errors', 1); ?>
 <div class="section">
     <div class="box-container">
         <div class="box-row">
-            <?php
-            $controller = new \App\Controllers\CircularisationController();
-            $controller->fournisseurs(53);
-            ?>
+            <?php $controller = new \App\Controllers\CircularisationController();
+            $controller->index(53); ?>
         </div>
     </div>
 </div>
@@ -83,7 +81,6 @@ ini_set('display_errors', 1); ?>
                         console.log(request.responseText);
                     }
                 }
-                request.close();
             }
         });
 
