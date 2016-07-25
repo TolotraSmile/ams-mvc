@@ -11,55 +11,39 @@ namespace App\Model;
 use App\Database\PdoDatabase;
 use App\Helpers\Debugger;
 
-class CircularisationModel
+class CircularisationModel extends Model
 {
-    private $database;
 
-    public function __construct(PdoDatabase $database)
+    public function __construct()
     {
-        $this->database = $database;
+        parent::__construct();
     }
 
     /**
-     * @param $idmission
+     * @param $idMission
      * @return array|bool
      */
-    public function getFournisseurs($idmission)
+    public function getCircularisation($idMission)
     {
         $sql = 'SELECT *
                 FROM tab_bal_aux
                 LEFT JOIN tab_circularisation_fichier
                 ON tab_bal_aux.BAL_AUX_ID = tab_circularisation_fichier.bal_aux_id';
-        if (empty($idmission) || $idmission == '') {
+        if (empty($idMission) || $idMission == '') {
             return $this->database->query($sql);
         }
-        if (is_array($idmission) && !empty($idmission)) {
-            $sql .= ' WHERE MISSION_ID IN (' . implode(',', $idmission) . ')';
-        } else {
-            $sql .= " WHERE BAL_AUX_COMPTE like '40%' AND MISSION_ID = $idmission";
+        if (!empty($idMission)) {
+            $sql .= " WHERE BAL_AUX_COMPTE like '40%' AND  MISSION_ID " . $this->normalize($idMission);
         }
         return $this->database->query($sql);
     }
 
-    /**
-     * @param array $mission
-     * @return array
-     */
-    public function getFournisseursInputs($mission = [])
+    public function getBalanceAux($idMission = [])
     {
-        $fournisseurs = $this->getFournisseurs($mission);
-        $data = [];
-        foreach ($fournisseurs as $value) {
-            $value->input = '<input type="checkbox" value="" style="margin: 0 0 0 20px;">';
-            $data[] = $value;
-        }
-        return $data;
-    }
-
-    public function getCircularisation($balAuxId = [])
-    {
-        $fournisseurs = $this->getFournisseurs($balAuxId);
-        return $fournisseurs;
+        $sql = "SELECT tab_bal_aux.BAL_AUX_ID,BAL_AUX_CODE,BAL_AUX_COMPTE,BAL_AUX_LIBELLE,BAL_AUX_SOLDE
+                FROM tab_bal_aux
+                WHERE BAL_AUX_COMPTE LIKE '40%' AND MISSION_ID" . $this->normalize($idMission) . "ORDER BY BAL_AUX_COMPTE,BAL_AUX_CODE ASC";
+        return $this->database->query($sql);
     }
 
 }

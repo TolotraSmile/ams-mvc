@@ -12,13 +12,12 @@ namespace App\Model;
 use App\Database\PdoDatabase;
 use App\Helpers\Debugger;
 
-class MissionModel
+class MissionModel extends Model
 {
-    private $database;
 
-    public function __construct(PdoDatabase $database)
+    public function __construct()
     {
-        $this->database = $database;
+        parent::__construct();
     }
 
     public function getMissions()

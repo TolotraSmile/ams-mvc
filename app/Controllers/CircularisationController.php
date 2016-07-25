@@ -9,7 +9,6 @@
 namespace App\Controllers;
 
 use App\Helpers\DataTableHelper;
-use App\Helpers\TableHelper;
 use App\Model\CircularisationModel;
 use App\Model\MissionModel;
 
@@ -22,8 +21,8 @@ class CircularisationController extends Controller
     {
         parent::__construct();
         $this->models = [
-            'mission' => new MissionModel($this->database),
-            'circularisation' => new CircularisationModel($this->database)
+            'mission' => new MissionModel(),
+            'circularisation' => new CircularisationModel()
         ];
     }
 
@@ -37,10 +36,11 @@ class CircularisationController extends Controller
 
     /**
      * @param $missions
+     * @return string
      */
     public function index($missions)
     {
-        $result = $this->models['circularisation']->getFournisseurs($missions);
+        $result = $this->models['circularisation']->getCircularisation($missions);
         $headers = ['', 'Compte', 'Code Tiers', 'Annexe', 'Solde'];
 
         $keys = [
@@ -52,15 +52,16 @@ class CircularisationController extends Controller
         ];
 
         $table = new DataTableHelper($result, $keys, $headers, ['style' => 'margin-bottom: 120px;'], 'BAL_AUX_ID');
-        echo $table->getTable();
+        return $table->getTable();
     }
 
     /**
      * @param $missions
+     * @return string
      */
-    public function fournisseurs($missions)
+    public function circularisation($missions)
     {
-        $result = $this->models['circularisation']->getFournisseurs($missions);
+        $result = $this->models['circularisation']->getBalanceAux($missions);
         $headers = ['Compte', 'Code Tiers', 'Annexe', 'Solde', 'Nom', 'Adresse', '', ''];
 
         $keys = [
@@ -70,23 +71,12 @@ class CircularisationController extends Controller
             4 => 'BAL_AUX_SOLDE',
             5 => '<input type="text" value="" style="margin: 0 ;">',
             6 => '<input type="text" value="" style="margin: 0 ;">',
-            7 => '<input type="button" value="Génerer" style="margin: 0;" onclick="generate(this)">',
-            8 => '<img src="public/img/thumbs-word.png" style="width: 32px; height: 32px;" onclick="openFile(this)"/>',
+            7 => '<input type="button" value="Génerer" style="margin: 0;" onclick="generateCircularisation(this)">',
+            8 => '<img src="public/img/thumbs-word.png" style="width: 32px; height: 32px; display: none;" onclick="openFile(this)"/>',
         ];
 
         $table = new DataTableHelper($result, $keys, $headers, ['style' => 'margin-bottom: 120px;'], 'BAL_AUX_ID');
-        echo $table->getTable();
-    }
-
-    /**
-     * @param $missions
-     */
-    public function circularisation($missions)
-    {
-        $result = $this->models['circularisation']->getCircularisation($missions);
-        $keys = ['' => 'input', 'Compte' => 'BAL_AUX_COMPTE', 'Code Tiers' => 'BAL_AUX_CODE', 'Annexe' => 'BAL_AUX_LIBELLE', 'Solde' => 'BAL_AUX_SOLDE'];
-        $table = new TableHelper($result, $keys, '', ['style' => 'margin-bottom: 120px;'], 'BAL_AUX_ID');
-        echo $table->getTable();
+        return $table->getTable();
     }
 
     /**
@@ -96,7 +86,7 @@ class CircularisationController extends Controller
     public function circulariser($aux)
     {
         //$result = $this->models['circularisation']->getCircularisation($aux);
-        $ids = implode(', data', $aux);
+        $ids = implode(',', $aux);
         return $ids;
     }
 

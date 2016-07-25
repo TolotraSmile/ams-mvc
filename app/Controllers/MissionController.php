@@ -18,8 +18,8 @@ class MissionController extends Controller
     {
         parent::__construct();
         $this->models = [
-            'mission' => new MissionModel($this->database),
-            'circularisation' => new CircularisationModel($this->database)
+            'mission' => new MissionModel(),
+            'circularisation' => new CircularisationModel()
         ];
     }
 

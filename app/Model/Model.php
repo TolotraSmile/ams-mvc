@@ -9,14 +9,23 @@
 namespace App\Model;
 
 
-use App\Database\PdoDatabase;
+use App\App;
 
 class Model
 {
     protected $database;
 
-    public function __construct(PdoDatabase $database)
+    public function __construct()
     {
-        $this->database = $database;
+        $this->database = App::getInstance()->getPdo();;
+    }
+
+    /**
+     * @param $array
+     * @return string
+     */
+    protected function normalize($array)
+    {
+        return is_array($array) ? 'IN (' . implode(',', $array) . ') ' : ' = ' . $array . ' ';
     }
 }

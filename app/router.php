@@ -23,8 +23,12 @@ if (isset($_GET['page']) && !empty($_GET['page'])) {
         header('Access Denied', true, 500);
     }
 
-    print json_encode([$controller, $result, json_decode($_POST['data'])]);
+    if ($controller === null) {
+        $controller = new \App\Controllers\CircularisationController();
+        $content = $controller->index(53);
+    }
+
 
 } else {
-    header('Not Found', true, 404);
+    //header('Not Found', true, 404);
 }

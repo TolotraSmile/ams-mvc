@@ -60,7 +60,6 @@ class DataTableHelper
                     $cells .= $this->surround($value, 'td', $attributes);
                 }
             }
-
         }
         return $cells;
     }

@@ -22,12 +22,13 @@
                     httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
                 }
                 catch (e) {
+                    console.log(e);
                 }
             }
         }
 
         if (!httpRequest) {
-            alert('Abandon :( Impossible de créer une instance XMLHTTP');
+            console.log('Impossible to create XMLHttp object.');
             return false;
         }
 

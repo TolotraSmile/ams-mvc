@@ -3,6 +3,7 @@
 namespace App\Database;
 
 use App\App;
+use App\Helpers\Debugger;
 
 class PdoDatabase
 {
@@ -15,6 +16,8 @@ class PdoDatabase
 
     public function query($sql)
     {
+        Debugger::debug($sql);
+
         $result = $this->pdo->query($sql, \PDO::FETCH_OBJ);
         if ($result) {
             return $result->fetchAll(\PDO::FETCH_OBJ);
