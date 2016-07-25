@@ -23,6 +23,8 @@
         console.log(selected);
         formData.append('data',JSON.stringify(selected));
 
+        //console.log(window.getUrl('circularisation','circulariser'));
+
         var request = window.getHttpRequest();
         request.open('POST',window.getUrl('circularisation','circulariser'));
         request.send(formData);
@@ -34,6 +36,7 @@
                 }
             }
         }
+
     });
 
     window.generateCircularisation = function (context) {

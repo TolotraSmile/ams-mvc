@@ -9,10 +9,7 @@
 <div class="section">
     <div class="box-container">
         <div class="box-row">
-            <?php
-            $controller = new \App\Controllers\CircularisationController();
-            echo $controller->index($_GET['idMission']);
-            ?>
+            <?= $content ?>
         </div>
     </div>
 </div>
@@ -20,8 +17,13 @@
 <footer>
     <div class="box">
         <div class="box-content">
-            <input id="frns-back" class="button control button-back" type="button" value="Retour">
+            <a href="app/router.php">
+                <input id="frns-back" type="button" value="Retour">
+            </a>
             <input id="frns-save" class="button button-primary control" type="button" value="Circulariser">
         </div>
     </div>
 </footer>
+
+<script type="application/javascript" src="public/js/ajax.js"></script>
+<script type="application/javascript" src="public/js/cir-fournisseur.js"></script>

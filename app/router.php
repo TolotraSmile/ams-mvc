@@ -8,6 +8,9 @@
 
 require '../vendor/autoload.php';
 
+
+print json_encode($_POST);
+
 if (isset($_GET['page']) && !empty($_GET['page'])) {
 
     $result = [];

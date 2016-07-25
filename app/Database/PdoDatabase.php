@@ -16,7 +16,7 @@ class PdoDatabase
 
     public function query($sql)
     {
-        Debugger::debug($sql);
+        //Debugger::debug($sql);
 
         $result = $this->pdo->query($sql, \PDO::FETCH_OBJ);
         if ($result) {

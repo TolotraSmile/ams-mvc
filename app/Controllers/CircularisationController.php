@@ -38,7 +38,7 @@ class CircularisationController extends Controller
      * @param $missions
      * @return string
      */
-    public function index($missions)
+    public function index($missions = 53)
     {
         $result = $this->models['circularisation']->getCircularisation($missions);
         $headers = ['', 'Compte', 'Code Tiers', 'Annexe', 'Solde'];

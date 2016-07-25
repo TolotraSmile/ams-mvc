@@ -1,20 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="public/css/normalize.css">
-    <link rel="stylesheet" href="public/css/skeleton.css">
-    <link rel="stylesheet" href="public/css/main.css">
-    <title>AMS</title>
-</head>
-<body>
-
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 defined('ROOT') || define('ROOT', __DIR__);
 
 require 'vendor/autoload.php';
+ob_start();
 
 if (isset($_GET['page']) && !empty($_GET['page'])) {
 
@@ -22,28 +12,25 @@ if (isset($_GET['page']) && !empty($_GET['page'])) {
     $config = require 'app/Config/mapping.php';
 
     $url = explode('@', $_GET['page']);
+
+    if (!isset($url[1]) || empty($url[1])) {
+        $url[1] = 'index';
+    }
+
     $method = $url[1];
 
     if (isset($config['controllers'][$url[0]])) {
         $controller = new $config['controllers'][$url[0]]();
-        $content = $controller->$method(json_decode($_POST['data']));
+        $content = $controller->$method();
     }
 
     //print json_encode([$controller, $content, json_decode($_POST['data'])]);
 
 } else {
+    $controller = new \App\Controllers\CircularisationController();
+    $content = $controller->index($_GET['idMission']);
     require_once 'public/pages/index.php';
-    //header('Not Found', true, 404);
+    $content = ob_get_clean();
 }
 
-
-?>
-</body>
-
-<script type="application/javascript" src="public/js/ajax.js"></script>
-<script type="application/javascript" src="public/js/cir-fournisseur.js"></script>
-<script>
-
-</script>
-
-</html>
+require_once 'public/pages/templates/default.php';

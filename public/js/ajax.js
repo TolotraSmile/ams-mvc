@@ -36,6 +36,7 @@
     }
 
     window.getUrl = function (controller,callable) {
-        return 'app/router.php?page=' + encodeURIComponent(controller + '@' + callable);
+        var url = '../../app/router.php?page=' + encodeURIComponent(controller + '@' + callable)
+        return url;
     }
 })(window);
