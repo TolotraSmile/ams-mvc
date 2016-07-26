@@ -59,9 +59,9 @@ class CircularisationController extends Controller
      * @param $missions
      * @return string
      */
-    public function circularisation($missions)
+    public function circularisation($missions, $ids)
     {
-        $result = $this->models['circularisation']->getBalanceAux($missions);
+        $result = $this->models['circularisation']->getBalanceAux($missions, $ids);
         $headers = ['Compte', 'Code Tiers', 'Annexe', 'Solde', 'Nom', 'Adresse', '', ''];
 
         $keys = [
@@ -72,7 +72,7 @@ class CircularisationController extends Controller
             5 => '<input type="text" value="" style="margin: 0 ;">',
             6 => '<input type="text" value="" style="margin: 0 ;">',
             7 => '<input type="button" value="Génerer" style="margin: 0;" onclick="generateCircularisation(this)">',
-            8 => '<img src="public/img/thumbs-word.png" style="width: 32px; height: 32px; display: none;" onclick="openFile(this)"/>',
+            8 => '<img src="../img/thumbs-word.png" style="width: 32px; height: 32px; display: none;" onclick="openFile(this)"/>',
         ];
 
         $table = new DataTableHelper($result, $keys, $headers, ['style' => 'margin-bottom: 120px;'], 'BAL_AUX_ID');
@@ -83,7 +83,7 @@ class CircularisationController extends Controller
      * @param $aux
      * @return string
      */
-    public function circulariser($aux)
+    public function circulariser($aux = [])
     {
         //$result = $this->models['circularisation']->getCircularisation($aux);
         $ids = implode(',', $aux);

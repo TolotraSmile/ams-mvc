@@ -6,32 +6,31 @@
  * Copyright etech consulting 2016
  */
 
+use App\Helpers\Debugger;
+
 require '../vendor/autoload.php';
 
 
-print json_encode($_POST);
-
 if (isset($_GET['page']) && !empty($_GET['page'])) {
 
-    $result = [];
+    $content = [];
     $config = require 'Config/mapping.php';
 
     $url = explode('@', $_GET['page']);
+
+    if (!isset($url[1]) || empty($url[1])) {
+        $url[1] = 'index';
+    }
+
     $method = $url[1];
 
     if (isset($config['controllers'][$url[0]])) {
         $controller = new $config['controllers'][$url[0]]();
-        $result = $controller->$method(json_decode($_POST['data']));
-    } else {
-        header('Access Denied', true, 500);
+        $content = $controller->$method(json_decode($_POST['data']));
     }
 
-    if ($controller === null) {
-        $controller = new \App\Controllers\CircularisationController();
-        $content = $controller->index(53);
-    }
-
+    print json_encode($content);
 
 } else {
-    //header('Not Found', true, 404);
+    header('Not Found', true, 404);
 }

@@ -17,7 +17,7 @@ class Debugger
     public static function debug($data)
     {
         if ($data != null) {
-            print '<pre>' . print_r($data, true) . '</pre>';
+            print '<pre>' . gettype($data) . '<br/>' . print_r($data, true) . '</pre>';
         } else {
             print_r('<pre>VAR IS NULL</pre>');
         }

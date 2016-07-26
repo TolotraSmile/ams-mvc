@@ -32,17 +32,23 @@ class CircularisationModel extends Model
         if (empty($idMission) || $idMission == '') {
             return $this->database->query($sql);
         }
+
         if (!empty($idMission)) {
             $sql .= " WHERE BAL_AUX_COMPTE like '40%' AND  MISSION_ID " . $this->normalize($idMission);
         }
         return $this->database->query($sql);
     }
 
-    public function getBalanceAux($idMission = [])
+    public function getBalanceAux($idMission = [], $ids = [])
     {
         $sql = "SELECT tab_bal_aux.BAL_AUX_ID,BAL_AUX_CODE,BAL_AUX_COMPTE,BAL_AUX_LIBELLE,BAL_AUX_SOLDE
                 FROM tab_bal_aux
-                WHERE BAL_AUX_COMPTE LIKE '40%' AND MISSION_ID" . $this->normalize($idMission) . "ORDER BY BAL_AUX_COMPTE,BAL_AUX_CODE ASC";
+                WHERE BAL_AUX_COMPTE LIKE '40%' ";
+        if (!empty($ids) && $ids != '') {
+            $sql .= " AND BAL_AUX_ID " . $this->normalize($ids);
+        }
+        $sql .= " AND MISSION_ID" . $this->normalize($idMission) . "ORDER BY BAL_AUX_COMPTE,BAL_AUX_CODE ASC";
+
         return $this->database->query($sql);
     }
 
