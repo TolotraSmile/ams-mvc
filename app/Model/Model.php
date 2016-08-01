@@ -10,7 +10,6 @@ namespace App\Model;
 
 
 use App\App;
-use App\Helpers\Debugger;
 
 class Model
 {

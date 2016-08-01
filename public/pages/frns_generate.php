@@ -19,6 +19,7 @@ if (isset($_GET['name']) && isset($_GET['adresse']) && isset($_GET['idBalAux']))
     $faker = Faker\Factory::create();
 
     $dateLimite = new DateTime($faker->date());
+
     // TODO : Change the date info's to real data
     $options = array(
         'dateLimite' => ucwords(strftime("%d %B %Y", $dateLimite->getTimestamp())),
@@ -44,10 +45,13 @@ if ($result && $result['error'] !== true) {
     );
 
     $model = new \App\Model\CircularisationModel();
+
     if ($model->exists($_GET['idBalAux'])) {
         $result['error'] = $model->update($data, 'bal_aux_id=' . $_GET['idBalAux']);
+        $result['action'] = 'UPDATE';
     } else {
         $result['error'] = $model->insert($data);
+        $result['action'] = 'INSERTION';
     }
     header($result['result'], false, 200);
 } else {

@@ -1,19 +1,4 @@
-<?php use App\Helpers\Debugger;
-
-require '../../vendor/autoload.php'; ?>
-
-<?php session_start(); ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="../css/normalize.css">
-    <link rel="stylesheet" href="../css/skeleton.css">
-    <link rel="stylesheet" href="../css/main.css">
-    <title>AMS</title>
-</head>
-<body>
+<?php require '../../vendor/autoload.php'; ?>
 <form class="circularisation-content" action="../../index.php?">
     <div class="section">
         <div class="box-title">
@@ -27,11 +12,11 @@ require '../../vendor/autoload.php'; ?>
         <div class="box-container">
             <div class="box-row">
                 <?php $controller = new \App\Controllers\CircularisationController();
-                echo $controller->circulariser($_SESSION['idMission'], json_decode($_GET['data'])); ?>
+                echo $controller->circulariser($_SESSION['idMission'], json_decode($_GET['data']));
+                ?>
             </div>
         </div>
     </div>
-
     <footer>
         <div class="box">
             <div class="box-content">
@@ -76,7 +61,7 @@ require '../../vendor/autoload.php'; ?>
                                     try {
                                         var img = node.querySelector('img');
                                         img.style.display = 'block';
-                                        img.parentNode.setAttribute('href',response.result);
+                                        img.parentNode.setAttribute('href',response.result.toString());
                                     } catch (e) {
                                         alert('Le fichier n\'a pas pu être generé. ERROR:' + e)
                                     }
@@ -103,8 +88,5 @@ require '../../vendor/autoload.php'; ?>
         window.openFile = function (context) {
             console.log(context.getAttribute('src'));
         }
-
     })(document,window);
 </script>
-</body>
-</html>

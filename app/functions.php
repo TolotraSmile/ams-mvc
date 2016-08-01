@@ -9,4 +9,10 @@
 if (!defined('AMS_USER_FUNC')) {
     define('AMS_USER_FUNC', 1);
 
+    if (!function_exists('session_status')) {
+        function session_status()
+        {
+            return session_id() === '' ? FALSE : TRUE;
+        }
+    }
 }

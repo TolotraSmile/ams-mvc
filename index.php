@@ -3,9 +3,6 @@
 $environment = 'DEBUG';
 
 setlocale(LC_ALL, 'fr_FR');
-
-include 'app/functions.php';
-
 // Check the environment for error displays
 if ($environment === 'DEBUG') {
 
@@ -81,7 +78,7 @@ session_start();
                 });
 
                 if (selected.length > 0) {
-                    window.location.href = 'public/pages/frns_circularisation.php?data='
+                    window.location.href = 'public/pages/frns_circularisation.php?circularisation=frns&data='
                         + encodeURIComponent(JSON.stringify(selected));
                 }
                 else {
