@@ -9,29 +9,27 @@
 namespace App\Helpers\Facades;
 
 
-use App\Helpers\Debugger;
-
 trait TableFacade
 {
-    public function surround($item, $tag, $atributes = [])
+    public static function surround($item, $tag, $attributes = [])
     {
-        $attr = $this->getAttributes($atributes);
+        $attr = self::getAttributes($attributes);
         return "<$tag $attr>$item</$tag>";
     }
 
-    public function surrounds($items, $tag, $atributes = [])
+    public static function surrounds($items, $tag, $attributes = [])
     {
         if (is_array($items)) {
             $ret = '';
             foreach ($items as $key) {
-                $ret .= $this->surround($key, $tag, $atributes);
+                $ret .= self::surround($key, $tag, $attributes);
             }
             return $ret;
         }
-        return $this->surround($items, $tag, $atributes);
+        return self::surround($items, $tag, $attributes);
     }
 
-    public function getAttributes($attributes = [])
+    public static function getAttributes($attributes = [])
     {
         if (empty($attributes) && is_array($attributes)) return '';
         $attr = ' ';

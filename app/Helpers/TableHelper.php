@@ -64,12 +64,12 @@ class TableHelper
      */
     private function getHead()
     {
-        $head = ($this->indexName != '') ? $this->surround($this->indexName, 'th') : '';
+        $head = ($this->indexName != '') ? self::surround($this->indexName, 'th') : '';
         foreach ($this->keys as $key => $value) {
             $head .= $this->surround($key, 'th');
         }
-        $head = $this->surround($head, 'tr');
-        return $this->surround($head, 'thead');
+        $head = self::surround($head, 'tr');
+        return self::surround($head, 'thead');
     }
 
     private $header;
@@ -96,9 +96,9 @@ class TableHelper
         foreach ($columns as $key => $value) {
 
             if (isset($data->$value)) {
-                $cells .= $this->surround($data->$value, 'td', $attributes);
+                $cells .= self::surround($data->$value, 'td', $attributes);
             } else {
-                $cells .= $this->surround($this->extras[$value], 'td', $attributes);
+                $cells .= self::surround($this->extras[$value], 'td', $attributes);
             }
             $counter++;
         }
@@ -121,12 +121,12 @@ class TableHelper
             if ($pk != null) {
                 $attr = ['id' => $item->$pk];
             }
-            $cells = $this->surround($cells, 'tr', $attr);
+            $cells = self::surround($cells, 'tr', $attr);
             $table .= $cells;
         }
 
-        $table = $this->surround($table, 'tbody');
+        $table = self::surround($table, 'tbody');
 
-        return $this->surround($this->getHead() . $table, 'table', $this->attributes);
+        return self::surround($this->getHead() . $table, 'table', $this->attributes);
     }
 }

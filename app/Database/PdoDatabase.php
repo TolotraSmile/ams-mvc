@@ -16,7 +16,11 @@ class PdoDatabase
 
     public function query($sql)
     {
-        //Debugger::debug($sql);
+        $sql = trim($sql);
+
+        if (strpos('INSERT', $sql) === 0 || strpos('UPDATE', $sql) === 0 || strpos('DELETE', $sql) === 0) {
+            return $this->pdo->query($sql);
+        }
 
         $result = $this->pdo->query($sql, \PDO::FETCH_OBJ);
         if ($result) {

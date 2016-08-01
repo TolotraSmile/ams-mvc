@@ -2,7 +2,9 @@
 //
 $environment = 'DEBUG';
 
-session_start();
+setlocale(LC_ALL, 'fr_FR');
+
+include 'app/functions.php';
 
 // Check the environment for error displays
 if ($environment === 'DEBUG') {
@@ -16,9 +18,14 @@ if ($environment === 'DEBUG') {
         $_SESSION['id'] = 1;
     }
 }
+
+
+session_start();
+
 ?>
 
 <?php require 'vendor/autoload.php'; ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +39,7 @@ if ($environment === 'DEBUG') {
 <body>
 
 <?php if (isset($_SESSION['idMission']) && isset($_SESSION['id'])): ?>
-    <form class="circularisation-content" method="post" action="public/pages/circularisation-fournisseurs.php">
+    <form class="circularisation-content" method="post" action="public/pages/frns_circularisation.php">
         <div class="section">
             <div class="box-title">
                 FOURNISSEURS : Comptes 40
@@ -74,7 +81,7 @@ if ($environment === 'DEBUG') {
                 });
 
                 if (selected.length > 0) {
-                    window.location.href = 'public/pages/circularisation-fournisseurs.php?data='
+                    window.location.href = 'public/pages/frns_circularisation.php?data='
                         + encodeURIComponent(JSON.stringify(selected));
                 }
                 else {
@@ -83,6 +90,9 @@ if ($environment === 'DEBUG') {
             });
 
             document.querySelector('#frns-back').addEventListener('click',function () {
+
+                console.log(window.history);
+
                 if (window.history) {
                     window.history.back();
                 }

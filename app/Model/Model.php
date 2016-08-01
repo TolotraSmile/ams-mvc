@@ -10,10 +10,12 @@ namespace App\Model;
 
 
 use App\App;
+use App\Helpers\Debugger;
 
 class Model
 {
     protected $database;
+    protected $tableName = '';
 
     public function __construct()
     {
@@ -28,4 +30,48 @@ class Model
     {
         return is_array($array) ? 'IN (' . implode(',', $array) . ') ' : ' = ' . $array . ' ';
     }
+
+
+    /**
+     * @param $data
+     * @return array|bool|\PDOStatement
+     */
+    public function insert($data)
+    {
+        $data = $this->implodeArray($data);
+        $columns = $data['columns'];
+        $values = $data['values'];
+
+        $sql = "INSERT INTO $this->tableName ($columns) VALUES ($values)";
+
+        return $this->database->query($sql);
+    }
+
+    /**
+     * @param $data
+     * @param $condition
+     * @return array|bool|\PDOStatement
+     */
+    public function update($data, $condition)
+    {
+        $columns = '';
+        foreach ($data as $key => $value) {
+            $columns .= "$key='$value'";
+        }
+        if (!empty($columns)) {
+            $sql = "UPDATE $this->tableName SET ($columns) WHERE $condition";
+            return $this->database->query($sql);
+        }
+        return false;
+    }
+
+    private function implodeArray($data)
+    {
+        $values = array();
+        foreach (array_values($data) as $value) {
+            $values[] = "'$value'";
+        }
+        return array('columns' => implode(', ', array_keys($data)), 'values' => implode(',', $values));
+    }
+
 }

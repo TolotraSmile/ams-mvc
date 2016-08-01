@@ -52,12 +52,12 @@ class DataTableHelper
 
             if (is_array($value)) {
                 $attributes[] = $value[1];
-                $cells .= $this->surround($data->$value[0], 'td', $attributes);
+                $cells .= self::surround($data->$value[0], 'td', $attributes);
             } else {
                 if (isset($data->$value)) {
-                    $cells .= $this->surround($data->$value, 'td', $attributes);
+                    $cells .= self::surround($data->$value, 'td', $attributes);
                 } else {
-                    $cells .= $this->surround($value, 'td', $attributes);
+                    $cells .= self::surround($value, 'td', $attributes);
                 }
             }
         }
@@ -79,13 +79,13 @@ class DataTableHelper
                 $attr = ['id' => $item->$pk];
             }
 
-            $cells = $this->surround($cells, 'tr', $attr);
+            $cells = self::surround($cells, 'tr', $attr);
             $table .= $cells;
         }
 
-        $table = $this->surround($table, 'tbody');
+        $table = self::surround($table, 'tbody');
 
-        return $this->surround($this->getHeader() . $table, 'table', $this->attributes);
+        return self::surround($this->getHeader() . $table, 'table', $this->attributes);
     }
 
     /**
@@ -95,10 +95,10 @@ class DataTableHelper
     {
         $head = '';
         foreach ($this->header as $key) {
-            $head .= $this->surround($key, 'th');
+            $head .= self::surround($key, 'th');
         }
-        $head = $this->surround($head, 'tr');
-        return $this->surround($head, 'thead');
+        $head = self::surround($head, 'tr');
+        return self::surround($head, 'thead');
     }
 
 }

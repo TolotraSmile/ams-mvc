@@ -6,8 +6,9 @@
  * Copyright etech consulting 2016
  */
 
-return [
-    'controllers' => [
-        'circularisation' => \App\Controllers\CircularisationController::class
-    ]
-];
+
+return array(
+    'controllers' => array(
+        'circularisation' => 'App\Controllers\CircularisationController'
+    )
+);

@@ -16,19 +16,32 @@ class Debugger
      */
     public static function debug($data)
     {
-        if ($data != null) {
-            print '<pre>' . gettype($data) . '<br/>' . print_r($data, true) . '</pre>';
-        } else {
-            print_r('<pre>VAR IS NULL</pre>');
-        }
+        print '<pre>' . print_r($data != null ? $data : 'VAR IS NULL', true) . '</pre>';
     }
 
     /**
-     * @param $data
+     *
      */
-    public static function dd($data)
+    public static function dd()
     {
-        self::debug($data);
+        $args = func_get_args();
+
+        if (count($args) === 1) {
+            $args = $args[0];
+            self::debug($args);
+        } else {
+            print '<pre>';
+
+            foreach ($args as $arg) {
+                print print_r($arg != null ? $arg : 'VAR IS NULL', true) . '<br/>-----------------<br/>';
+            }
+            print '</pre>';
+        }
         die();
+    }
+
+    public static function json($data)
+    {
+        print json_encode($data);
     }
 }

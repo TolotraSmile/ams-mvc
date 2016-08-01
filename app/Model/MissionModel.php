@@ -30,7 +30,7 @@ class MissionModel extends Model
         return $this->database->query($sql);
     }
 
-    public function getFournisseurs($idmission = [])
+    public function getFournisseurs($idmission = array())
     {
         try {
             $sql = 'SELECT *

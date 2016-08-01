@@ -13,11 +13,12 @@ use App\App;
 
 class Controller
 {
-    protected $models = [];
+    protected $models = array();
     protected $database;
-    
+
     public function __construct()
     {
+        session_start();
         $this->database = App::getInstance()->getPdo();
     }
 }

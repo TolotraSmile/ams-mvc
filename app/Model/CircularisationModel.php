@@ -14,6 +14,8 @@ use App\Helpers\Debugger;
 class CircularisationModel extends Model
 {
 
+    protected $tableName = 'tab_circularisation_fichier';
+
     public function __construct()
     {
         parent::__construct();
@@ -39,7 +41,37 @@ class CircularisationModel extends Model
         return $this->database->query($sql);
     }
 
-    public function getBalanceAux($idMission = [], $ids = [])
+    public function exists($idBalAux = 0)
+    {
+        $sql = "SELECT COUNT(bal_aux_id) as rows
+                FROM tab_circularisation_fichier
+                WHERE bal_aux_id = $idBalAux";
+        $result = $this->database->query($sql);
+
+        return $result && $result[0]->rows > 0;
+    }
+
+    /**
+     * @param $idMission
+     * @param array $ids
+     * @param string $type
+     * @return array|bool|\PDOStatement
+     */
+    public function getCircularised($idMission, $ids = array(), $type = 'fournisseurs')
+    {
+        $sql = "SELECT *
+                FROM tab_bal_aux
+                LEFT JOIN tab_circularisation_fichier
+                ON tab_bal_aux.BAL_AUX_ID = tab_circularisation_fichier.bal_aux_id
+                WHERE BAL_AUX_COMPTE LIKE '40%'";
+        if (!empty($ids) && $ids != '') {
+            $sql .= " AND tab_bal_aux.BAL_AUX_ID " . $this->normalize($ids);
+        }
+        $sql .= " AND MISSION_ID" . $this->normalize($idMission) . "ORDER BY BAL_AUX_COMPTE,BAL_AUX_CODE ASC";
+        return $this->database->query($sql);
+    }
+
+    public function getBalanceAux($idMission = array(), $ids = array())
     {
         $sql = "SELECT tab_bal_aux.BAL_AUX_ID,BAL_AUX_CODE,BAL_AUX_COMPTE,BAL_AUX_LIBELLE,BAL_AUX_SOLDE
                 FROM tab_bal_aux
@@ -51,5 +83,4 @@ class CircularisationModel extends Model
 
         return $this->database->query($sql);
     }
-
 }

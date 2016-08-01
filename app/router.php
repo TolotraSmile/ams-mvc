@@ -6,14 +6,13 @@
  * Copyright etech consulting 2016
  */
 
-use App\Helpers\Debugger;
 
 require '../vendor/autoload.php';
 
 
 if (isset($_GET['page']) && !empty($_GET['page'])) {
 
-    $content = [];
+    $content = array();
     $config = require 'Config/mapping.php';
 
     $url = explode('@', $_GET['page']);
