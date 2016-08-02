@@ -2,31 +2,26 @@
 /**
  * Created by Tolotra Raharison
  * GitHub : tolotrasmile.github.io
- * At : 21/07/2016 11:12
+ * At : 02/08/2016 10:32
  * Copyright etech consulting 2016
  */
 
 namespace App\Controllers;
 
+
 use App\Helpers\FormHelper;
 use App\Model\CircularisationModel;
 
-class CircularisationController extends Controller
+
+class ClientController extends Controller
 {
     /**
-     * @var
-     */
-    private $type;
-
-    /**
      * CircularisationController constructor.
-     * @param $type
      */
-    public function __construct($type)
+    public function __construct()
     {
         parent::__construct();
         $this->model = new CircularisationModel();
-        $this->type = $type;
     }
 
     /**
@@ -35,7 +30,7 @@ class CircularisationController extends Controller
      */
     public function index($idMission = 53)
     {
-        $results = $this->model->getCircularisation($idMission, $this->type);
+        $results = $this->model->getCircularisation($idMission, '41');
         $headers = array('', 'Compte', 'Code Tiers', 'Annexe', 'Solde');
 
         $table = '';
@@ -57,21 +52,19 @@ class CircularisationController extends Controller
         return FormHelper::surround(FormHelper::getTableHeader($headers) . $table, 'table');
     }
 
-    public function circulariser($idMission = 53, $selected = array())
+    public function circulariser($idMission = 53, $selected = array(), $type = 40)
     {
-        $results = $this->model->getCircularised($idMission, $selected, $this->type);
-        $headers = array('N', 'Compte', 'Code Tiers', 'Annexe', 'Solde', 'Nom', 'Adresse', '', '');
+        $results = $this->model->getCircularised($idMission, $selected, $type);
+        $headers = array('Compte', 'Code Tiers', 'Annexe', 'Solde', 'Nom', 'Adresse', '', '');
         $table = '';
-        $i = 0;
         foreach ($results as $result) {
-            $rows = FormHelper::surround(++$i, 'td');
-            $rows .= FormHelper::surround($result->BAL_AUX_COMPTE, 'td');
+            $rows = FormHelper::surround($result->BAL_AUX_COMPTE, 'td');
             $rows .= FormHelper::surround($result->BAL_AUX_CODE, 'td');
             $rows .= FormHelper::surround($result->BAL_AUX_LIBELLE, 'td');
             $rows .= FormHelper::surround($result->BAL_AUX_SOLDE, 'td');
             $rows .= FormHelper::surround('<input type="text" value="' . $result->fileDestName . '" style="margin: 0 ;">', 'td');
             $rows .= FormHelper::surround('<input type="text" value="' . $result->fileDestCoord . '" style="margin: 0 ;">', 'td');
-            $rows .= FormHelper::surround('<input type="button" value="Génerer" style="margin: 0;" onclick="generateCircularisation(this, ' . $this->type . ')">', 'td');
+            $rows .= FormHelper::surround('<input type="button" value="Génerer" style="margin: 0;" onclick="generateCircularisation(this, '.$this->type.')">', 'td');
             $filename = '#';
             $display = 'none';
             if ($result->fileName !== null && file_exists($_SERVER['DOCUMENT_ROOT'] . $result->fileName)) {
@@ -86,6 +79,4 @@ class CircularisationController extends Controller
 
         return FormHelper::surround(FormHelper::getTableHeader($headers) . $table, 'table');
     }
-
-
 }

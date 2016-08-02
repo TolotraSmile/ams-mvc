@@ -10,6 +10,7 @@ namespace App\Model;
 
 
 use App\App;
+use App\Helpers\Debugger;
 
 class Model
 {
@@ -54,11 +55,15 @@ class Model
     public function update($data, $condition)
     {
         $columns = '';
+
         foreach ($data as $key => $value) {
-            $columns .= "$key='$value'";
+            $columns .= "$key='$value',";
         }
+
+        $columns = substr($columns, 0, strlen($columns) - 1);
+
         if (!empty($columns)) {
-            $sql = "UPDATE $this->tableName SET ($columns) WHERE $condition";
+            $sql = "UPDATE $this->tableName SET $columns WHERE $condition";
             return $this->database->query($sql);
         }
         return false;
@@ -70,7 +75,7 @@ class Model
         foreach (array_values($data) as $value) {
             $values[] = "'$value'";
         }
-        return array('columns' => implode(', ', array_keys($data)), 'values' => implode(',', $values));
+        return array('columns' => implode(', ', array_keys($data)), 'values' => implode(', ', $values));
     }
 
 }

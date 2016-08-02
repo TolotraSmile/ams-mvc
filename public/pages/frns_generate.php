@@ -12,6 +12,10 @@ use App\Reporting\WordReporting;
 $result = array('result' => null, 'error' => true);
 session_start();
 
+$type = array(40 => 'fournisseur', 41 => 'client');
+
+$fileType = (isset($type[$_GET['type']])) ? $type[$_GET['type']] : 'fournisseur';
+
 if (isset($_GET['name']) && isset($_GET['adresse']) && isset($_GET['idBalAux'])) {
 
     $now = new DateTime();
@@ -28,10 +32,11 @@ if (isset($_GET['name']) && isset($_GET['adresse']) && isset($_GET['idBalAux']))
         'coordonnees' => $_GET['adresse']
     );
 
-    $result = WordReporting::render($name, $options, 'fournisseur');
+    $result = WordReporting::render($name, $options, $fileType);
 }
 
 if ($result && $result['error'] !== true) {
+
 
     // Insert data into database
     $data = array(
@@ -39,13 +44,14 @@ if ($result && $result['error'] !== true) {
         'fileIdMission' => $_SESSION['idMission'],
         'fileDestName' => $_GET['name'],
         'fileDestCoord' => $_GET['adresse'],
-        'fileCategory' => 'fournisseur',
+        'fileCategory' => $fileType,
         'fileTimeCreation' => $now->format('Y-m-d'),
         'bal_aux_id' => $_GET['idBalAux']
     );
 
     $model = new \App\Model\CircularisationModel();
 
+    $result['fileType'] = $fileType;
     if ($model->exists($_GET['idBalAux'])) {
         $result['error'] = $model->update($data, 'bal_aux_id=' . $_GET['idBalAux']);
         $result['action'] = 'UPDATE';

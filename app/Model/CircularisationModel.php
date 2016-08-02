@@ -23,9 +23,10 @@ class CircularisationModel extends Model
 
     /**
      * @param $idMission
+     * @param string $type
      * @return array|bool
      */
-    public function getCircularisation($idMission)
+    public function getCircularisation($idMission, $type = 40)
     {
         $sql = 'SELECT *
                 FROM tab_bal_aux
@@ -36,8 +37,9 @@ class CircularisationModel extends Model
         }
 
         if (!empty($idMission)) {
-            $sql .= " WHERE BAL_AUX_COMPTE like '40%' AND  MISSION_ID " . $this->normalize($idMission);
+            $sql .= " WHERE BAL_AUX_COMPTE like '$type%' AND  MISSION_ID " . $this->normalize($idMission);
         }
+
         return $this->database->query($sql);
     }
 
@@ -54,30 +56,18 @@ class CircularisationModel extends Model
     /**
      * @param $idMission
      * @param array $ids
-     * @param string $type
+     * @param int|string $type
      * @return array|bool|\PDOStatement
      */
-    public function getCircularised($idMission, $ids = array(), $type = 'fournisseurs')
+    public function getCircularised($idMission, $ids = array(), $type = 40)
     {
         $sql = "SELECT *
                 FROM tab_bal_aux
                 LEFT JOIN tab_circularisation_fichier
                 ON tab_bal_aux.BAL_AUX_ID = tab_circularisation_fichier.bal_aux_id
-                WHERE BAL_AUX_COMPTE LIKE '40%'";
+                WHERE BAL_AUX_COMPTE LIKE '$type%'";
         if (!empty($ids) && $ids != '') {
             $sql .= " AND tab_bal_aux.BAL_AUX_ID " . $this->normalize($ids);
-        }
-        $sql .= " AND MISSION_ID" . $this->normalize($idMission) . "ORDER BY BAL_AUX_COMPTE,BAL_AUX_CODE ASC";
-        return $this->database->query($sql);
-    }
-
-    public function getBalanceAux($idMission = array(), $ids = array())
-    {
-        $sql = "SELECT tab_bal_aux.BAL_AUX_ID,BAL_AUX_CODE,BAL_AUX_COMPTE,BAL_AUX_LIBELLE,BAL_AUX_SOLDE
-                FROM tab_bal_aux
-                WHERE BAL_AUX_COMPTE LIKE '40%' ";
-        if (!empty($ids) && $ids != '') {
-            $sql .= " AND BAL_AUX_ID " . $this->normalize($ids);
         }
         $sql .= " AND MISSION_ID" . $this->normalize($idMission) . "ORDER BY BAL_AUX_COMPTE,BAL_AUX_CODE ASC";
 

@@ -13,7 +13,7 @@ use App\App;
 
 class Controller
 {
-    protected $models = array();
+    protected $model;
     protected $database;
 
     public function __construct()
