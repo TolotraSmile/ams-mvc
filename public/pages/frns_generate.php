@@ -12,7 +12,7 @@ use App\Reporting\WordReporting;
 $result = array('result' => null, 'error' => true);
 session_start();
 
-$type = array(40 => 'fournisseur', 41 => 'client');
+$type = array(40 => 'fournisseur', 41 => 'client', 42 => 'banque');
 
 $fileType = (isset($type[$_GET['type']])) ? $type[$_GET['type']] : 'fournisseur';
 
@@ -29,14 +29,14 @@ if (isset($_GET['name']) && isset($_GET['adresse']) && isset($_GET['idBalAux']))
         'dateLimite' => ucwords(strftime("%d %B %Y", $dateLimite->getTimestamp())),
         'date' => ucwords(strftime("%d %B %Y", $now->getTimestamp())),
         'nom' => $_GET['name'],
-        'coordonnees' => $_GET['adresse']
+        'coordonnees' => $_GET['adresse'],
+        'template' => 'template_lettre_fournisseur'
     );
 
     $result = WordReporting::render($name, $options, $fileType);
 }
 
 if ($result && $result['error'] !== true) {
-
 
     // Insert data into database
     $data = array(

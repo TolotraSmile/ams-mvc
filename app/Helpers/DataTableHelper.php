@@ -11,10 +11,8 @@ namespace App\Helpers;
 
 use App\Helpers\Facades\TableFacade;
 
-class DataTableHelper
+class DataTableHelper extends TableFacade
 {
-
-    use TableFacade;
     private $data;
     private $keys;
     private $header;
@@ -28,8 +26,6 @@ class DataTableHelper
      * @param $header
      * @param $primaryKey
      * @param $attributes
-     * @internal param $headers
-     * @internal param $extras
      */
     public function __construct($data, $keys, $header, $attributes, $primaryKey)
     {
@@ -45,7 +41,7 @@ class DataTableHelper
      * @param $attributes
      * @return string
      */
-    private function getRow($data, $attributes = [])
+    private function getRow($data, $attributes = array())
     {
         $cells = '';
         foreach ($this->keys as $key => $value) {
@@ -71,12 +67,12 @@ class DataTableHelper
         foreach ($this->data as $item) {
             $cells = $this->getRow($item);
 
-            $attr = [];
+            $attr = array();
 
             $pk = $this->primaryKey;
 
             if ($pk != null) {
-                $attr = ['id' => $item->$pk];
+                $attr = array('id' => $item->$pk);
             }
 
             $cells = self::surround($cells, 'tr', $attr);

@@ -16,6 +16,9 @@ class CircularisationModel extends Model
 
     protected $tableName = 'tab_circularisation_fichier';
 
+    /**
+     * CircularisationModel constructor.
+     */
     public function __construct()
     {
         parent::__construct();
@@ -23,14 +26,12 @@ class CircularisationModel extends Model
 
     /**
      * @param $idMission
-     * @param string $type
+     * @param int|string $type
      * @return array|bool
      */
     public function getCircularisation($idMission, $type = 40)
     {
-        $sql = 'SELECT *
-                FROM tab_bal_aux
-                LEFT JOIN tab_circularisation_fichier
+        $sql = 'SELECT * FROM tab_bal_aux LEFT JOIN tab_circularisation_fichier
                 ON tab_bal_aux.BAL_AUX_ID = tab_circularisation_fichier.bal_aux_id';
         if (empty($idMission) || $idMission == '') {
             return $this->database->query($sql);
@@ -43,29 +44,28 @@ class CircularisationModel extends Model
         return $this->database->query($sql);
     }
 
+    /**
+     * @param int $idBalAux
+     * @return bool
+     */
     public function exists($idBalAux = 0)
     {
-        $sql = "SELECT COUNT(bal_aux_id) as rows
-                FROM tab_circularisation_fichier
-                WHERE bal_aux_id = $idBalAux";
+        $sql = "SELECT COUNT(bal_aux_id) as rows FROM tab_circularisation_fichier WHERE bal_aux_id = $idBalAux";
         $result = $this->database->query($sql);
-
         return $result && $result[0]->rows > 0;
     }
 
     /**
      * @param $idMission
      * @param array $ids
-     * @param int|string $type
+     * @param int $type
      * @return array|bool|\PDOStatement
      */
     public function getCircularised($idMission, $ids = array(), $type = 40)
     {
-        $sql = "SELECT *
-                FROM tab_bal_aux
-                LEFT JOIN tab_circularisation_fichier
+        $sql = "SELECT * FROM tab_bal_aux LEFT JOIN tab_circularisation_fichier
                 ON tab_bal_aux.BAL_AUX_ID = tab_circularisation_fichier.bal_aux_id
-                WHERE BAL_AUX_COMPTE LIKE '$type%'";
+                WHERE BAL_AUX_COMPTE LIKE '$type%' ";
         if (!empty($ids) && $ids != '') {
             $sql .= " AND tab_bal_aux.BAL_AUX_ID " . $this->normalize($ids);
         }
@@ -73,4 +73,13 @@ class CircularisationModel extends Model
 
         return $this->database->query($sql);
     }
+
+    public function getDatasCircularisation($type = 'fournisseur')
+    {
+        $sql = "SELECT * FROM tab_circularisation_fichier LEFT JOIN tab_bal_aux 
+                ON tab_bal_aux.BAL_AUX_ID = tab_circularisation_fichier.bal_aux_id 
+                WHERE fileCategory='$type'";
+        return $this->database->query($sql);
+    }
+
 }

@@ -11,7 +11,7 @@ namespace App\Helpers;
 
 use App\Helpers\Facades\TableFacade;
 
-class TableHelper
+class TableHelper extends TableFacade
 {
     /**
      * @var array
@@ -36,8 +36,6 @@ class TableHelper
      * @var array
      */
     private $extras;
-
-    use TableFacade;
 
     /**
      * TableHelper constructor.
@@ -108,8 +106,7 @@ class TableHelper
     /**
      * @return string
      */
-    public
-    function getTable()
+    public function getTable()
     {
         $table = '';
         foreach ($this->data as $item) {

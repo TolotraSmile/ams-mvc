@@ -4,7 +4,7 @@
             BANQUES : Comptes 42
         </div>
         <div class="box-subtitle">
-            Sélectionner clients à circulariser
+            Sélectionner banque à circulariser
         </div>
     </div>
     <div class="section">

@@ -2,7 +2,7 @@
     <form class="circularisation-content" method="post" action="public/pages/frns_circularisation.php">
         <div class="section">
             <div class="box-title">
-                <?= strtoupper($_GET['type'] . 's') ?> : Comptes 41
+                CLIENTS : Comptes 41
             </div>
             <div class="box-subtitle">
                 Sélectionner clients à circulariser
@@ -31,26 +31,22 @@
         (function (document,window) {
             document.querySelector('#frns-save').addEventListener('click',function () {
                 var selected = [];
-
                 var $inputs = document.querySelectorAll('input[type="checkbox"]:checked');
+
                 $inputs.forEach(function (element) {
                     var row = element.parentNode.parentNode;
                     selected.push(row.getAttribute('id'));
                 });
 
                 if (selected.length > 0) {
-                    window.location.href = 'public/pages/circularisation.php?circularisation=client&type=<?php echo $_GET["type"]?>&data='
+                    window.location.href = 'public/pages/circularisation.php?circularisation=client&type=<?php echo $_GET["type"]; ?>&data='
                         + encodeURIComponent(JSON.stringify(selected));
-                }
-                else {
+                } else {
                     alert('Vous devriez sélectionner au moins un element à circulariser');
                 }
             });
-
             document.querySelector('#frns-back').addEventListener('click',function () {
-
                 console.log(window.history);
-
                 if (window.history) {
                     window.history.back();
                 }

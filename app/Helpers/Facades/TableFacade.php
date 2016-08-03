@@ -9,15 +9,27 @@
 namespace App\Helpers\Facades;
 
 
-trait TableFacade
+class TableFacade
 {
-    public static function surround($item, $tag, $attributes = [])
+    /**
+     * @param $item
+     * @param $tag
+     * @param array $attributes
+     * @return string
+     */
+    public static function surround($item, $tag, $attributes = array())
     {
         $attr = self::getAttributes($attributes);
         return "<$tag $attr>$item</$tag>";
     }
 
-    public static function surrounds($items, $tag, $attributes = [])
+    /**
+     * @param $items
+     * @param $tag
+     * @param array $attributes
+     * @return string
+     */
+    public static function surrounds($items, $tag, $attributes = array())
     {
         if (is_array($items)) {
             $ret = '';
@@ -29,7 +41,11 @@ trait TableFacade
         return self::surround($items, $tag, $attributes);
     }
 
-    public static function getAttributes($attributes = [])
+    /**
+     * @param array $attributes
+     * @return string
+     */
+    public static function getAttributes($attributes = array())
     {
         if (empty($attributes) && is_array($attributes)) return '';
         $attr = ' ';
