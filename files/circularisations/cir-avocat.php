@@ -26,16 +26,13 @@
                         <td><a href="#"><img src="public/img/thumbs-word.png"
                                              style="width: 32px; height: 32px; display: none"/></a>
                         </td>
-                        <td><input type="button" id="cloneAocat" value="+" style="margin: 0;"
-                                   class="button button-primary control"
-                                   onclick="cloneAvocat(this)"/>
-                        </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+
     <footer>
         <div class="box">
             <div class="box-content">
@@ -44,15 +41,20 @@
         </div>
     </footer>
 </form>
+<div class="floating" onclick="cloneAvocat(this)">+</div>
 
 <script type="application/javascript">
-    (function (window) {
+    (function (window,document) {
 
         window.cloneAvocat = function (element) {
-            var $parent = element.parentNode.parentNode;
+            var $parent = document.querySelector('#prototypeAvocat');
             var $clone = $parent.cloneNode(true);
-
-            $parent.querySelectorAll('td:last-child')[0].querySelector('input').remove();
+            $clone.setAttribute('id','')
+            var button = $parent.querySelectorAll('td:last-child')[0].querySelector('input');
+            if (button) {
+                button.remove();
+            }
+            //$parent.querySelectorAll('td:last-child')[0].querySelector('input').remove();
             $clone.querySelectorAll('input[type="text"]').forEach(function (element) {
                 element.value = '';
             });
@@ -75,5 +77,5 @@
             img.parentNode.setAttribute('href',(Math.random() * 255) + '');
         }
 
-    })(window);
+    })(window,document);
 </script>

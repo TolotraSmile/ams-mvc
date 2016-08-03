@@ -16,4 +16,4 @@ require 'vendor/autoload.php';
 
 //echo FormHelper::input('submit', ['value' => 'Submiter :D']);
 $mode = new \App\Model\CircularisationModel();
-Debugger::dd($mode->getDatasCircularisation());
+var_dump($mode->getDatasCircularisation());

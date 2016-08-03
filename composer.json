@@ -9,7 +9,8 @@
   "require": {
     "php": ">=5.4.0",
     "fzaninotto/faker": "^1.6",
-    "phpoffice/phpword": "^0.12.1"
+    "phpoffice/phpword": "^0.12.1",
+    "php-console/php-console": "~3.0"
   },
   "autoload": {
     "psr-4": {
