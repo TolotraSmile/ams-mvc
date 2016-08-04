@@ -44,20 +44,22 @@
 <div class="floating" onclick="cloneAvocat(this)">+</div>
 
 <script type="application/javascript">
-    (function (window,document) {
+    (function (window, document) {
 
         window.cloneAvocat = function (element) {
             var $parent = document.querySelector('#prototypeAvocat');
             var $clone = $parent.cloneNode(true);
-            $clone.setAttribute('id','')
+            $clone.setAttribute('id', '')
             var button = $parent.querySelectorAll('td:last-child')[0].querySelector('input');
             if (button) {
                 button.remove();
             }
             //$parent.querySelectorAll('td:last-child')[0].querySelector('input').remove();
-            $clone.querySelectorAll('input[type="text"]').forEach(function (element) {
-                element.value = '';
-            });
+            var elements = $clone.querySelectorAll('input[type="text"]');
+
+            for (var i = 0, length = elements.length; i < length; i++) {
+                elements[i].value = '';
+            }
 
             $parent.parentNode.appendChild($clone);
             var img = $clone.querySelector('img');
@@ -68,14 +70,18 @@
             var $parent = element.parentNode.parentNode;
 
             var $name = $parent.querySelector('input[title="name"]');
-            console.log($name);
             var $infos = $parent.querySelector('input[title="infos"]');
 
+            if ($name.value !== '' && $infos.value !== '') {
+                var img = $parent.querySelector('img');
+                img.style.display = 'block';
+                img.parentNode.setAttribute('href', (Math.random() * 255) + '');
+            }
+            else{
+                alert('Vous devriez remplir tous les champs. Merci!');
+            }
 
-            var img = $parent.querySelector('img');
-            img.style.display = 'block';
-            img.parentNode.setAttribute('href',(Math.random() * 255) + '');
         }
 
-    })(window,document);
+    })(window, document);
 </script>
