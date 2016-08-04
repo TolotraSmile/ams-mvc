@@ -24,7 +24,7 @@
             </footer>
         <?php else: ?>
             <div class="box">
-                <h4>Aucun fournisseur à circulariser.</h4>
+                <h4>Aucun <b><?= strtoupper($_GET['type']) ?></b> à circulariser.</h4>
             </div>
             <footer>
                 <div class="box">
