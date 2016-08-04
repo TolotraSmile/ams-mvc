@@ -8,6 +8,7 @@
 
 namespace App\Reporting;
 
+use App\Helpers\Debugger;
 use PhpOffice\PhpWord\Settings;
 use PhpOffice\PhpWord\TemplateProcessor;
 
@@ -44,6 +45,7 @@ class WordReporting
                 $reportsDir .= DIRECTORY_SEPARATOR . $type;
 
                 if (!is_dir($reportsDir)) {
+                    //Debugger::dd($reportsDir);
                     mkdir($reportsDir, 0777);
                 }
 
@@ -65,6 +67,5 @@ class WordReporting
             }
         }
         return array('result' => null, 'error' => true);
-
     }
 }

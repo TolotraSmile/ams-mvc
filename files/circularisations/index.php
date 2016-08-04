@@ -1,18 +1,12 @@
-<?php if (isset($_SESSION['idMission']) && isset($_SESSION['id']) && isset($_GET['type'])): ?>
+<?php if (isset($_SESSION['idMission']) && isset($_SESSION['id']) && isset($_GET['type']) && isset($index)): ?>
     <form class="circularisation-content" method="post" action="public/pages/frns_circularisation.php">
         <div class="section">
-            <div class="box-title">
-                <?= strtoupper($_GET['type'] . 's') ?> : Comptes 40
-            </div>
-            <div class="box-subtitle">
-                Sélectionner fournisseurs à circulariser
-            </div>
+            <div class="box-title"><?= strtoupper($_GET['type'] . 's') ?> : Comptes <?= $index ?></div>
+            <div class="box-subtitle">Sélectionner <?= $_GET['type'] ?> à circulariser</div>
         </div>
-        <?php $controller = new \App\Controllers\CircularisationController(40);
-        $data = $controller->index($_SESSION['idMission']);
-        ?>
+        <?php $controller = new \App\Controllers\CircularisationController($index);
+        $data = $controller->index($_SESSION['idMission']); ?>
         <?php if ($data): ?>
-
             <div class="section">
                 <div class="box-container">
                     <div class="box-row">

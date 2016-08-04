@@ -80,8 +80,6 @@
             else{
                 alert('Vous devriez remplir tous les champs. Merci!');
             }
-
         }
-
     })(window, document);
 </script>
