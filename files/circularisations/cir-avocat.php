@@ -75,7 +75,7 @@
             if ($name.value !== '' && $infos.value !== '') {
                 var img = $parent.querySelector('img');
                 img.style.display = 'block';
-                img.parentNode.setAttribute('href', (Math.random() * 255) + '');
+                img.parentNode.setAttribute('href', "#index");
             }
             else{
                 alert('Vous devriez remplir tous les champs. Merci!');

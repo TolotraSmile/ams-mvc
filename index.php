@@ -1,61 +1,76 @@
-<?php
-//
-$environment = 'DEBUG';
+<?php if (isset($_SESSION['idMission']) && isset($_SESSION['id']) && isset($_GET['type']) && isset($index)): ?>
+    <form class="circularisation-content" method="post" action="public/pages/frns_circularisation.php">
+        <div class="section">
+            <div class="box-title"><?= strtoupper($_GET['type'] . 's') ?> : Comptes <?= $index ?></div>
+            <div class="box-subtitle">Sélectionner <?= $_GET['type'] ?> à circulariser</div>
+        </div>
+        <?php $controller = new \App\Controllers\CircularisationController($index);
+        $data = $controller->index($_SESSION['idMission']); ?>
+        <?php if ($data): ?>
+            <div class="section">
+                <div class="box-container">
+                    <div class="box-row">
+                        <?= $data ?>
+                    </div>
+                </div>
+            </div>
+            <footer>
+                <div class="box">
+                    <div class="box-content">
+                        <input id="frns-back" class="button button-back" type="button" value="Retour">
+                        <input id="frns-save" class="button button-primary control" type="button" value="Circulariser">
+                    </div>
+                </div>
+            </footer>
+        <?php else: ?>
+            <div class="box">
+                <h4>Aucun <b><?= strtoupper($_GET['type']) ?></b> à circulariser.</h4>
+            </div>
+            <footer>
+                <div class="box">
+                    <div class="box-content">
+                        <input id="frns-back" class="button button-back" type="button" value="Retour">
+                    </div>
+                </div>
+            </footer>
+        <?php endif; ?>
+    </form>
 
-setlocale(LC_ALL, 'fr_FR');
+    <script type="application/javascript" src="public/js/ajax.js"></script>
+    <script type="application/javascript">
+        // Circularisation
+        (function (document, window) {
+            var $save = document.querySelector('#frns-save')
+            if ($save) {
+                $save.addEventListener('click', function () {
+                    var selected = [];
 
-session_start();
+                    var $inputs = document.querySelectorAll('input[type="checkbox"]:checked');
 
-// Check the environment for error displays
-if ($environment === 'DEBUG') {
+                    for (var i = 0, length = $inputs.length; i < length; i++) {
+                        var row = $inputs[i].parentNode.parentNode;
+                        selected.push(row.getAttribute('id'));
+                    }
 
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
+                    if (selected.length > 0) {
+                        var url = 'public/pages/circularisation.php?circularisation=fournisseur&type=<?php echo $_GET["type"]?>&data='
+                            + encodeURIComponent(JSON.stringify(selected));
+                        console.log(url);
+                        window.location.href = url;
+                    }
+                    else {
+                        alert('Vous devriez sélectionner au moins un element à circulariser');
+                    }
+                });
+            }
 
-    // Check mission session
-    if (!isset($_SESSION['idMission'])) {
-        $_SESSION['idMission'] = 53;
-        $_SESSION['id'] = 1;
-    }
-}
-
-?>
-
-<?php require 'vendor/autoload.php'; ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="public/css/normalize.css">
-    <link rel="stylesheet" href="public/css/skeleton.css">
-    <link rel="stylesheet" href="public/css/main.css">
-    <title><?= isset($_GET['type']) ? 'Circularisation ' . $_GET['type'] : 'fournisseur' ?></title>
-</head>
-<body>
-
-<!-- Test the file existance -->
-<?php if (isset($_GET['type'])) {
-    $types = array('fournisseur' => 40, 'client' => 41, 'avocat' => 42, 'banque');
-} ?>
-
-<!-- Check the error -->
-<?php if (array_key_exists($_GET['type'], $types)): ?>
-    <?php
-    if ($_GET['type'] == 'avocat') {
-        $path = 'files/circularisations/cir-' . $_GET['type'] . '.php';;
-        if (file_exists($path)) {
-            require $path;
-        }
-    } else {
-        $index = $types[$_GET['type']];
-        require 'files/circularisations/index.php';
-    } ?>
+            document.querySelector('#frns-back').addEventListener('click', function () {
+                window.location.href = 'index.php?type=<?php echo $_GET["type"]?>';
+            });
+        })(document, window);
+    </script>
 <?php else: ?>
-    <?php header('Not Found', true, 404) ?>
     <div class="box">
-        <h1>Page introuvable</h1>
+        <h4>Veuillez sélectionner une mission.</h4>
     </div>
 <?php endif; ?>
-</body>
-</html>

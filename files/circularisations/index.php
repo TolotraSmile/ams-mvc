@@ -46,17 +46,16 @@
                     var selected = [];
 
                     var $inputs = document.querySelectorAll('input[type="checkbox"]:checked');
-                    $inputs.forEach(function (element) {
-                        var row = element.parentNode.parentNode;
+
+                    for (var i = 0, length = $inputs.length; i < length; i++) {
+                        var row = $inputs[i].parentNode.parentNode;
                         selected.push(row.getAttribute('id'));
-                    });
+                    }
 
                     if (selected.length > 0) {
-
                         var url = 'public/pages/circularisation.php?circularisation=fournisseur&type=<?php echo $_GET["type"]?>&data='
                             + encodeURIComponent(JSON.stringify(selected));
                         console.log(url);
-
                         window.location.href = url;
                     }
                     else {
