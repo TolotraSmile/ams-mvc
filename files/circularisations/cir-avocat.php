@@ -50,11 +50,11 @@
             var $parent = document.querySelector('#prototypeAvocat');
             var $clone = $parent.cloneNode(true);
             $clone.setAttribute('id', '')
-            var button = $parent.querySelectorAll('td:last-child')[0].querySelector('input');
+
+            var button = $parent.querySelector('td:last-child > input');
             if (button) {
                 button.remove();
             }
-            //$parent.querySelectorAll('td:last-child')[0].querySelector('input').remove();
             var elements = $clone.querySelectorAll('input[type="text"]');
 
             for (var i = 0, length = elements.length; i < length; i++) {

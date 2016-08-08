@@ -19,7 +19,7 @@ $fileType = (isset($type[$_GET['type']])) ? $type[$_GET['type']] : 'fournisseur'
 if (isset($_GET['name']) && isset($_GET['adresse']) && isset($_GET['idBalAux'])) {
 
     $now = new DateTime();
-    $name = array($_SESSION['idMission'], $_GET['idBalAux'], $now->getTimestamp());
+    $name = array($_SESSION['idMission'], $_GET['idBalAux']);
     $faker = Faker\Factory::create();
 
     $dateLimite = new DateTime($faker->date());
@@ -40,7 +40,7 @@ if ($result && $result['error'] !== true) {
 
     // Insert data into database
     $data = array(
-        'fileName' => $result['result'],
+        'fileName' => str_replace('\\', DIRECTORY_SEPARATOR,  $result['result']),
         'fileIdMission' => $_SESSION['idMission'],
         'fileDestName' => $_GET['name'],
         'fileDestCoord' => $_GET['adresse'],

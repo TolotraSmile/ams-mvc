@@ -1,6 +1,4 @@
-<?php
-//
-$environment = 'DEBUG';
+<?php $environment = 'DEBUG';
 
 setlocale(LC_ALL, 'fr_FR');
 
@@ -17,9 +15,7 @@ if ($environment === 'DEBUG') {
         $_SESSION['idMission'] = 53;
         $_SESSION['id'] = 1;
     }
-}
-
-?>
+} ?>
 
 <?php require 'vendor/autoload.php'; ?>
 

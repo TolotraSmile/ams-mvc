@@ -18,10 +18,10 @@
     <form class="circularisation-content" action="../../index.php?">
         <div class="section">
             <div class="box-title">
-                <?= strtoupper($_GET['circularisation']) . 'S : Comptes ' . $type[$_GET['type']] ?>
+                <?= strtoupper($_GET['type']) . 'S : Comptes ' . $type[$_GET['type']] ?>
             </div>
             <div class="box-subtitle">
-                Circularisation des <?= $_GET['circularisation'] ?>s
+                Circularisation des <?= $_GET['type'] ?>s
             </div>
         </div>
         <div class="section">

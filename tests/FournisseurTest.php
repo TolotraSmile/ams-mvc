@@ -12,10 +12,8 @@ use App\Helpers\FormHelper;
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 //echo FormHelper::input('submit', ['value' => 'Submiter :D']);
 $mode = new \App\Model\CircularisationModel();
-var_dump($_SERVER);
-
-str_replace()
+var_dump($mode->getCircularisation(53, 40));

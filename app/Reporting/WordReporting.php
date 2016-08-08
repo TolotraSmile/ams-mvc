@@ -25,11 +25,12 @@ class WordReporting
     public static function render($name, $options, $type = 'fournisseur', $replace = false)
     {
         //$template = 'template_lettre_fournisseur';
-        $root = realpath(dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'files');
+        $root = realpath(dirname(dirname(__DIR__))) . '/' . 'files';
+        $root = str_replace('\\', '/', $root);
 
-        Settings::setTempDir($root . DIRECTORY_SEPARATOR . 'temps');
+        Settings::setTempDir($root . '/' . 'temps');
 
-        $templates = $root . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $options['template'] . '.docx';
+        $templates = $root . '/' . 'templates' . '/' . $options['template'] . '.docx';
 
         if (file_exists($templates)) {
             $template = new TemplateProcessor($templates);
@@ -39,10 +40,10 @@ class WordReporting
                 }
             }
 
-            $reportsDir = $root . DIRECTORY_SEPARATOR . 'reports';
+            $reportsDir = $root . '/' . 'reports';
 
             if ($type != null) {
-                $reportsDir .= DIRECTORY_SEPARATOR . $type;
+                $reportsDir .= '/' . $type;
 
                 if (!is_dir($reportsDir)) {
                     //Debugger::dd($reportsDir);
@@ -55,7 +56,7 @@ class WordReporting
 
                 $output = $type . '_' . $name;//. '_' . date('YmdHms');
 
-                $output = $reportsDir . DIRECTORY_SEPARATOR . $output . '.docx';
+                $output = $reportsDir . '/' . $output . '.docx';
 
                 if (!file_exists($output) || $replace) {
                     $template->saveAs($output);
