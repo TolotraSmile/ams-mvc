@@ -60,6 +60,11 @@ class CircularisationController extends Controller
         return false;
     }
 
+    /**
+     * @param int $idMission
+     * @param array $selected
+     * @return bool|string
+     */
     public function circulariser($idMission = 53, $selected = array())
     {
         $results = $this->model->getCircularised($idMission, $selected, $this->type);
@@ -92,6 +97,4 @@ class CircularisationController extends Controller
         }
         return false;
     }
-
-
 }
