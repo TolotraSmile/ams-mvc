@@ -24,12 +24,14 @@ class WordReporting
      */
     public static function render($name, $options, $type = 'fournisseur', $replace = false)
     {
-        //$template = 'template_lettre_fournisseur';
-        $root = realpath(dirname(dirname(__DIR__))) . '/' . 'files';
-        $root = str_replace('\\', '/', $root);
+        // Set root directory
+        $root = str_replace('\\', '/', realpath(dirname(dirname(__DIR__))) . '/' . 'files');
 
+        // Set temp directory
         Settings::setTempDir($root . '/' . 'temps');
 
+        // Set templates directory
+        //$template = 'template_lettre_fournisseur';
         $templates = $root . '/' . 'templates' . '/' . $options['template'] . '.docx';
 
         if (file_exists($templates)) {
