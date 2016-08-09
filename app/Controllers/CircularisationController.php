@@ -97,8 +97,8 @@ class CircularisationController extends Controller
         return false;
     }
 
-    public function getAvocats($idMission){
-
+    public function getAvocats($idMission)
+    {
         return $this->model->getDatasCircularisation('avocat', 53);
     }
 }

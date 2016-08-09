@@ -33,9 +33,10 @@
                                 <input type="button" value="Génerer" style="margin: 0;" onclick="generateAvocat(this)"/>
                             </td>
                             <td>
-                                <a href="<?php echo $item->fileName != null ? $item->fileName : '#' ?>">
+                                <?php $file = file_exists($_SERVER['DOCUMENT_ROOT'] . '/' . $item->fileName) && $item->fileName != null; ?>
+                                <a href="<?= $file ? $item->fileName : '#' ?>">
                                     <img src="public/img/thumbs-word.png"
-                                         style="width: 32px; height: 32px; display: <?php echo $item->fileName != null ? 'block' : 'none' ?>"/>
+                                         style="width: 32px; height: 32px; display: <?= $file ? 'block' : 'none' ?>"/>
                                 </a>
                             </td>
                         </tr>

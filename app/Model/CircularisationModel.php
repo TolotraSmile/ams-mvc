@@ -38,7 +38,7 @@ class CircularisationModel extends Model
         }
 
         if (!empty($idMission)) {
-            $sql .= " WHERE BAL_AUX_COMPTE like '$type%' AND  fileIdMission " . $this->normalize($idMission);
+            $sql .= " WHERE BAL_AUX_COMPTE like '$type%' AND  MISSION_ID " . $this->normalize($idMission);
         }
 
         return $this->database->query($sql);
@@ -69,7 +69,7 @@ class CircularisationModel extends Model
         if (!empty($ids) && $ids != '') {
             $sql .= " AND tab_bal_aux.BAL_AUX_ID " . $this->normalize($ids);
         }
-        $sql .= " AND fileIdMission" . $this->normalize($idMission) . "ORDER BY BAL_AUX_COMPTE,BAL_AUX_CODE ASC";
+        $sql .= " AND MISSION_ID" . $this->normalize($idMission) . "ORDER BY BAL_AUX_COMPTE,BAL_AUX_CODE ASC";
 
         return $this->database->query($sql);
     }
