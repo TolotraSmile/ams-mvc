@@ -16,8 +16,9 @@ require '../vendor/autoload.php';
 
 //echo FormHelper::input('submit', ['value' => 'Submiter :D']);
 $mode = new \App\Model\CircularisationModel();
+var_dump($mode->getCircularisation(53));
 //var_dump($_SERVER);
-
+die();
 //$template = 'template_lettre_fournisseur';
 $root = realpath(dirname(dirname(__DIR__))) . '/' . 'files';
 $root = str_replace('\\', '/', $root);

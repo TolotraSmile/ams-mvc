@@ -22,8 +22,10 @@ class WordReporting
      * @param bool $replace
      * @return array
      */
-    public static function render($name, $options, $type = 'fournisseur', $replace = false)
+    public static function render($name, $options, $replace = false)
     {
+        $type = $options['type'];
+
         // Set root directory
         $root = str_replace('\\', '/', realpath(dirname(dirname(__DIR__))) . '/' . 'files');
 

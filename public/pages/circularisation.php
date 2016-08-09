@@ -99,8 +99,7 @@
                     if (confirm('Voulez-vous écraser le fichier?') === true) {
                         save($inputs);
                     }
-                }
-                else {
+                } else {
                     save($inputs)
                 }
             }

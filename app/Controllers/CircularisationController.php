@@ -26,7 +26,6 @@ class CircularisationController extends Controller
     {
         parent::__construct();
         $this->model = new CircularisationModel();
-
         $this->type = $type;
     }
 
@@ -96,5 +95,10 @@ class CircularisationController extends Controller
             return FormHelper::surround(FormHelper::getTableHeader($headers) . $table, 'table');
         }
         return false;
+    }
+
+    public function getAvocats($idMission){
+
+        return $this->model->getDatasCircularisation('avocat', 53);
     }
 }

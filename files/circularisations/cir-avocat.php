@@ -18,6 +18,29 @@
                     </tr>
                     </thead>
                     <tbody>
+
+                    <?php $controller = new \App\Controllers\CircularisationController(44); ?>
+                    <?php foreach ($controller->getAvocats($_SESSION['idMission']) as $item): ?>
+                        <tr>
+                            <td>
+                                <input type="text" value="<?= $item->fileDestName ?>" style="margin: 0 ;" title="name">
+                            </td>
+                            <td>
+                                <input type="text" value="<?= $item->fileDestCoord ?>" style="margin: 0 ;"
+                                       title="infos">
+                            </td>
+                            <td>
+                                <input type="button" value="Génerer" style="margin: 0;" onclick="generateAvocat(this)"/>
+                            </td>
+                            <td>
+                                <a href="<?php echo $item->fileName != null ? $item->fileName : '#' ?>">
+                                    <img src="public/img/thumbs-word.png"
+                                         style="width: 32px; height: 32px; display: <?php echo $item->fileName != null ? 'block' : 'none' ?>"/>
+                                </a>
+                            </td>
+                        </tr>
+
+                    <?php endforeach; ?>
                     <tr id="prototypeAvocat">
                         <td><input type="text" value="" style="margin: 0 ;" title="name"></td>
                         <td><input type="text" value="" style="margin: 0 ;" title="infos"></td>
@@ -42,7 +65,7 @@
     </footer>
 </form>
 <div class="floating" onclick="cloneAvocat(this)">+</div>
-
+<script type="application/javascript" src="public/js/ajax.js"></script>
 <script type="application/javascript">
     (function (window, document) {
 
@@ -73,11 +96,36 @@
             var $infos = $parent.querySelector('input[title="infos"]');
 
             if ($name.value !== '' && $infos.value !== '') {
-                var img = $parent.querySelector('img');
-                img.style.display = 'block';
-                img.parentNode.setAttribute('href', "#index");
+                var request = window.getHttpRequest();
+
+                //console.log(request);
+
+                var url = "public/pages/frns_generate.php?name=" + $name.value + "&adresse=" + $infos.value + "&idBalAux=0&type=43";
+                console.log(url);
+
+                request.open('post', url);
+                request.addEventListener('readystatechange', function () {
+                    if (request.readyState == 4) {
+                        if (request.status == 200 || request.status == 0) {
+                            try {
+                                var img = $parent.querySelector('img');
+                                img.style.display = 'block';
+
+                                console.log(request.responseText);
+
+                                var response = JSON.parse(request.responseText);
+                                img.parentNode.setAttribute('href', response.result.toString());
+                                alert('Le fichier a été bien  generé.');
+                            } catch (e) {
+                                alert('Le fichier n\'a pas pu être generé. ERROR:' + e)
+                            }
+                        }
+                    }
+                });
+                request.send(null);
+
             }
-            else{
+            else {
                 alert('Vous devriez remplir tous les champs. Merci!');
             }
         }

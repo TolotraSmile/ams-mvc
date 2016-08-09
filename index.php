@@ -32,7 +32,7 @@ if ($environment === 'DEBUG') {
 
 <!-- Test the file existance -->
 <?php if (isset($_GET['type'])) {
-    $types = array('fournisseur' => 40, 'client' => 41, 'avocat' => 42, 'banque');
+    $types = array('fournisseur' => 40, 'client' => 41, 'banque' => 42, 'avocat' => 43, 'dcd' => 44);
 } ?>
 
 <!-- Check the error -->
