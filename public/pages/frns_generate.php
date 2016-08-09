@@ -27,18 +27,16 @@ if (isset($_GET['name']) && isset($_GET['adresse']) && isset($_GET['idBalAux']))
     $now = new DateTime();
 
     if ($fileType == 'avocat') {
-        $name = array($_GET['name'], $_GET['adresse'], $_SESSION['idMission']);
+        $name = array($_GET['name'], $_SESSION['idMission']);
     } else {
         $name = array($_SESSION['idMission'], $_GET['idBalAux']);
     }
 
-    $faker = Faker\Factory::create();
-
-    $dateLimite = new DateTime($faker->date());
+    $model = new \App\Model\CircularisationModel();
 
     // TODO : Change the date info's to real data
     $options = array(
-        'dateLimite' => ucwords(strftime("%d %B %Y", $dateLimite->getTimestamp())),
+        'dateLimite' => $model->getDateLimite($_SESSION['idMission']),
         'date' => ucwords(strftime("%d %B %Y", $now->getTimestamp())),
         'nom' => $_GET['name'],
         'coordonnees' => $_GET['adresse'],

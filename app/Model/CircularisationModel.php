@@ -74,12 +74,23 @@ class CircularisationModel extends Model
         return $this->database->query($sql);
     }
 
+    /**
+     * @param string $type
+     * @param int $idMission
+     * @return array|bool|\PDOStatement
+     */
     public function getDatasCircularisation($type = 'fournisseur', $idMission = 0)
     {
         $sql = "SELECT * FROM tab_circularisation_fichier LEFT JOIN tab_bal_aux 
                 ON tab_bal_aux.BAL_AUX_ID = tab_circularisation_fichier.bal_aux_id 
                 WHERE fileCategory='$type' AND fileIdMission" . $this->normalize($idMission) . "ORDER BY BAL_AUX_COMPTE,BAL_AUX_CODE ASC";
         return $this->database->query($sql);
+    }
+
+    public function getDateLimite($idMission)
+    {
+        $sql = "SELECT MISSION_DATE_CLOTURE FROM tab_mission WHERE MISSION_ID=$idMission";
+        return $this->database->query($sql)[0]->MISSION_DATE_CLOTURE;
     }
 
 }
