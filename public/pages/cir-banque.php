@@ -51,6 +51,7 @@
 
     // Circularisation
     (function (document,window) {
+        
         document.querySelector('#frns-list').addEventListener('click',function () {
             window.history.back();
         });
@@ -58,6 +59,7 @@
         window.generateCircularisation = function (context,type) {
             // Get the current row <tr>
         }
+
     })(document,window);
 </script>
 

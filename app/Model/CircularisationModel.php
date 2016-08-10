@@ -8,9 +8,6 @@
 
 namespace App\Model;
 
-use App\Database\PdoDatabase;
-use App\Helpers\Debugger;
-
 class CircularisationModel extends Model
 {
 

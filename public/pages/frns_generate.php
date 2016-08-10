@@ -44,7 +44,6 @@ if (isset($_GET['name']) && isset($_GET['adresse']) && isset($_GET['idBalAux']))
         'type' => $fileType
     );
 
-
     $result = WordReporting::render($name, $options, $fileType);
 }
 
@@ -62,7 +61,7 @@ if ($result && $result['error'] !== true) {
     );
 
     $model = new \App\Model\CircularisationModel();
-    if ($fileType == 'avocat') {
+    if ($fileType == 'avocat' || $fileType == 'dcd') {
         $result['error'] = $model->insert($data);
         $result['action'] = 'INSERT';
     } else {

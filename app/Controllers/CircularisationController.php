@@ -104,6 +104,6 @@ class CircularisationController extends Controller
 
     public function getDcd($idMission)
     {
-        return $this->model->getDatasCircularisation('avocat', $idMission);
+        return $this->model->getDatasCircularisation('dcd', $idMission);
     }
 }

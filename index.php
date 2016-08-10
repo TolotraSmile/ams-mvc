@@ -38,7 +38,7 @@ if ($environment === 'DEBUG') {
 <!-- Check the error -->
 <?php if (array_key_exists($_GET['type'], $types)): ?>
     <?php
-    if ($_GET['type'] == 'avocat' || $_GET['type'] == 'banque') {
+    if ($_GET['type'] == 'avocat' || $_GET['type'] == 'banque'|| $_GET['type'] == 'dcd') {
         $path = 'files/circularisations/cir-' . $_GET['type'] . '.php';;
         if (file_exists($path)) {
             require $path;
