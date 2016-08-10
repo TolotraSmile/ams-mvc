@@ -1,0 +1,216 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "ec3a20b14c9cfb0f51838ee7bea3e796",
+    "content-hash": "6dd308d962230f76e88a233fcb250a43",
+    "packages": [
+        {
+            "name": "fzaninotto/faker",
+            "version": "v1.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fzaninotto/Faker.git",
+                "reference": "44f9a286a04b80c76a4e5fb7aad8bb539b920123"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/44f9a286a04b80c76a4e5fb7aad8bb539b920123",
+                "reference": "44f9a286a04b80c76a4e5fb7aad8bb539b920123",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3.3|^7.0"
+            },
+            "require-dev": {
+                "ext-intl": "*",
+                "phpunit/phpunit": "~4.0",
+                "squizlabs/php_codesniffer": "~1.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": []
+            },
+            "autoload": {
+                "psr-4": {
+                    "Faker\\": "src/Faker/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "François Zaninotto"
+                }
+            ],
+            "description": "Faker is a PHP library that generates fake data for you.",
+            "keywords": [
+                "data",
+                "faker",
+                "fixtures"
+            ],
+            "time": "2016-04-29 12:21:54"
+        },
+        {
+            "name": "php-console/php-console",
+            "version": "3.1.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/barbushin/php-console.git",
+                "reference": "07801c32ea32e4d57ddf1c6b9cf98ff7f2982542"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/barbushin/php-console/zipball/07801c32ea32e4d57ddf1c6b9cf98ff7f2982542",
+                "reference": "07801c32ea32e4d57ddf1c6b9cf98ff7f2982542",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "PhpConsole": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD 3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sergey Barbushin",
+                    "email": "barbushin@gmail.com",
+                    "homepage": "http://linkedin.com/in/barbushin"
+                }
+            ],
+            "description": "Server side PHP library for Google Chrome extension \"PHP Console\".",
+            "homepage": "https://github.com/barbushin/php-console",
+            "keywords": [
+                "chrome",
+                "debug",
+                "error handler",
+                "errors",
+                "google chrome",
+                "php"
+            ],
+            "time": "2016-02-19 16:00:24"
+        },
+        {
+            "name": "phpoffice/phpword",
+            "version": "v0.12.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPOffice/PHPWord.git",
+                "reference": "38cb04d322007dd522cbdd8ba3cd50ab67ced0db"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPOffice/PHPWord/zipball/38cb04d322007dd522cbdd8ba3cd50ab67ced0db",
+                "reference": "38cb04d322007dd522cbdd8ba3cd50ab67ced0db",
+                "shasum": ""
+            },
+            "require": {
+                "ext-xml": "*",
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "dompdf/dompdf": "0.6.*",
+                "mpdf/mpdf": "5.*",
+                "phpdocumentor/phpdocumentor": "2.*",
+                "phploc/phploc": "2.*",
+                "phpmd/phpmd": "2.*",
+                "phpunit/phpunit": "3.7.*",
+                "sebastian/phpcpd": "2.*",
+                "squizlabs/php_codesniffer": "1.*",
+                "tecnick.com/tcpdf": "6.*"
+            },
+            "suggest": {
+                "dompdf/dompdf": "Used to write PDF",
+                "ext-gd2": "Used to add images",
+                "ext-xmlwriter": "Used to write DOCX and ODT",
+                "ext-xsl": "Used to apply XSL style sheet to main document part of OOXML template",
+                "ext-zip": "Used to write DOCX and ODT"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PhpOffice\\PhpWord\\": "src/PhpWord"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Mark Baker"
+                },
+                {
+                    "name": "Franck Lefevre",
+                    "homepage": "http://blog.rootslabs.net"
+                },
+                {
+                    "name": "Gabriel Bull",
+                    "email": "me@gabrielbull.com",
+                    "homepage": "http://gabrielbull.com/"
+                },
+                {
+                    "name": "Ivan Lanin",
+                    "homepage": "http://ivan.lanin.org"
+                },
+                {
+                    "name": "Roman Syroeshko",
+                    "homepage": "http://ru.linkedin.com/pub/roman-syroeshko/34/a53/994/"
+                }
+            ],
+            "description": "PHPWord - A pure PHP library for reading and writing word processing documents (DOCX, ODT, RTF, HTML, PDF)",
+            "homepage": "http://phpoffice.github.io",
+            "keywords": [
+                "ISO IEC 29500",
+                "OOXML",
+                "Office Open XML",
+                "OpenDocument",
+                "OpenXML",
+                "PhpOffice",
+                "PhpWord",
+                "Rich Text Format",
+                "WordprocessingML",
+                "doc",
+                "docx",
+                "html",
+                "odt",
+                "office",
+                "pdf",
+                "php",
+                "reader",
+                "rtf",
+                "template",
+                "template processor",
+                "word",
+                "writer"
+            ],
+            "time": "2015-08-30 14:30:44"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=5.4.0"
+    },
+    "platform-dev": []
+}
