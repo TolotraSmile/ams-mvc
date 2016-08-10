@@ -1,6 +1,4 @@
-<?php
-//
-$environment = 'DEBUG';
+<?php $environment = 'DEBUG';
 
 setlocale(LC_ALL, 'fr_FR');
 
@@ -17,9 +15,7 @@ if ($environment === 'DEBUG') {
         $_SESSION['idMission'] = 53;
         $_SESSION['id'] = 1;
     }
-}
-
-?>
+} ?>
 
 <?php require 'vendor/autoload.php'; ?>
 
@@ -35,21 +31,27 @@ if ($environment === 'DEBUG') {
 <body>
 
 <!-- Test the file existance -->
-<?php $error = true;
-if (isset($_GET['type'])) {
-    $path = 'files/circularisations/cir-' . $_GET['type'] . '.php';
-    $error &= !file_exists($path);
+<?php if (isset($_GET['type'])) {
+    $types = array('fournisseur' => 40, 'client' => 41, 'banque' => 42, 'avocat' => 43, 'dcd' => 44);
 } ?>
 
 <!-- Check the error -->
-<?php if ($error === 0): ?>
-    <?php require $path ?>
+<?php if (array_key_exists($_GET['type'], $types)): ?>
+    <?php
+    if ($_GET['type'] == 'avocat' || $_GET['type'] == 'banque') {
+        $path = 'files/circularisations/cir-' . $_GET['type'] . '.php';;
+        if (file_exists($path)) {
+            require $path;
+        }
+    } else {
+        $index = $types[$_GET['type']];
+        require 'files/circularisations/index.php';
+    } ?>
 <?php else: ?>
     <?php header('Not Found', true, 404) ?>
     <div class="box">
         <h1>Page introuvable</h1>
     </div>
 <?php endif; ?>
-
 </body>
 </html>

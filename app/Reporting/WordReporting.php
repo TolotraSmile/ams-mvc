@@ -8,6 +8,7 @@
 
 namespace App\Reporting;
 
+use App\Helpers\Debugger;
 use PhpOffice\PhpWord\Settings;
 use PhpOffice\PhpWord\TemplateProcessor;
 
@@ -21,14 +22,19 @@ class WordReporting
      * @param bool $replace
      * @return array
      */
-    public static function render($name, $options, $type = 'fournisseur', $replace = false)
+    public static function render($name, $options, $replace = false)
     {
+        $type = $options['type'];
+
+        // Set root directory
+        $root = str_replace('\\', '/', realpath(dirname(dirname(__DIR__))) . '/' . 'files');
+
+        // Set temp directory
+        Settings::setTempDir($root . '/' . 'temps');
+
+        // Set templates directory
         //$template = 'template_lettre_fournisseur';
-        $root = realpath(dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'files');
-
-        Settings::setTempDir($root . DIRECTORY_SEPARATOR . 'temps');
-
-        $templates = $root . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $options['template'] . '.docx';
+        $templates = $root . '/' . 'templates' . '/' . $options['template'] . '.docx';
 
         if (file_exists($templates)) {
             $template = new TemplateProcessor($templates);
@@ -38,12 +44,13 @@ class WordReporting
                 }
             }
 
-            $reportsDir = $root . DIRECTORY_SEPARATOR . 'reports';
+            $reportsDir = $root . '/' . 'reports';
 
             if ($type != null) {
-                $reportsDir .= DIRECTORY_SEPARATOR . $type;
+                $reportsDir .= '/' . $type;
 
                 if (!is_dir($reportsDir)) {
+                    //Debugger::dd($reportsDir);
                     mkdir($reportsDir, 0777);
                 }
 
@@ -53,7 +60,7 @@ class WordReporting
 
                 $output = $type . '_' . $name;//. '_' . date('YmdHms');
 
-                $output = $reportsDir . DIRECTORY_SEPARATOR . $output . '.docx';
+                $output = $reportsDir . '/' . $output . '.docx';
 
                 if (!file_exists($output) || $replace) {
                     $template->saveAs($output);
@@ -65,6 +72,5 @@ class WordReporting
             }
         }
         return array('result' => null, 'error' => true);
-
     }
 }

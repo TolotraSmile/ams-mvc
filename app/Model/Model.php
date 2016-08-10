@@ -28,7 +28,7 @@ class Model
      */
     protected function normalize($array)
     {
-        return is_array($array) ? 'IN (' . implode(',', $array) . ') ' : ' = ' . $array . ' ';
+        return is_array($array) ? ' IN (' . implode(',', $array) . ') ' : ' = ' . $array . ' ';
     }
 
 
