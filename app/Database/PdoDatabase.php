@@ -14,7 +14,7 @@ class PdoDatabase
         $this->pdo = new \PDO('mysql:host=localhost:3306;dbname=tmsconsuams', 'root', '');
     }
 
-    public function query($sql)
+    public function query($sql, $single = false)
     {
         $sql = trim($sql);
 
@@ -24,7 +24,7 @@ class PdoDatabase
 
         $result = $this->pdo->query($sql, \PDO::FETCH_OBJ);
         if ($result) {
-            return $result->fetchAll(\PDO::FETCH_OBJ);
+            return ($single === false) ? $result->fetchAll(\PDO::FETCH_OBJ) : $result->fetch(\PDO::FETCH_OBJ);
         }
         return false;
     }

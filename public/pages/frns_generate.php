@@ -14,6 +14,8 @@ use App\Reporting\WordReporting;
  * $_SESSION : idMission
  * */
 
+$mois = array('Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre');
+
 $result = array('result' => null, 'error' => true);
 
 session_start();
@@ -25,8 +27,7 @@ $fileType = (isset($type[$_GET['type']])) ? $type[$_GET['type']] : 'fournisseur'
 if (isset($_GET['name']) && isset($_GET['adresse']) && isset($_GET['idBalAux'])) {
 
     $now = new DateTime();
-
-    if ($fileType == 'avocat') {
+    if ($fileType == 'avocat' || $fileType == 'dcd') {
         $name = array($_GET['name'], $_SESSION['idMission']);
     } else {
         $name = array($_SESSION['idMission'], $_GET['idBalAux']);
@@ -37,7 +38,7 @@ if (isset($_GET['name']) && isset($_GET['adresse']) && isset($_GET['idBalAux']))
     // TODO : Change the date info's to real data
     $options = array(
         'dateLimite' => $model->getDateLimite($_SESSION['idMission']),
-        'date' => ucwords(strftime("%d %B %Y", $now->getTimestamp())),
+        'date' => ucwords(strftime("%d " . $mois[(int)date("m", time()) - 1] . " %Y", time())),
         'nom' => $_GET['name'],
         'coordonnees' => $_GET['adresse'],
         'template' => 'template_lettre_' . $fileType,
@@ -51,7 +52,7 @@ if ($result && $result['error'] !== true) {
 
     // Insert data into database
     $data = array(
-        'fileName' => str_replace('\\', DIRECTORY_SEPARATOR, $result['result']),
+        'fileName' => str_replace('\\', '/', $result['result']),
         'fileIdMission' => $_SESSION['idMission'],
         'fileDestName' => $_GET['name'],
         'fileDestCoord' => $_GET['adresse'],
@@ -62,10 +63,14 @@ if ($result && $result['error'] !== true) {
 
     $model = new \App\Model\CircularisationModel();
     if ($fileType == 'avocat' || $fileType == 'dcd') {
-        $result['error'] = $model->insert($data);
-        $result['action'] = 'INSERT';
+        if ($id = $model->existByName($fileType, $_GET['name'])) {
+            $result['error'] = $model->update($data, 'idFile=' . $id);
+            $result['action'] = 'UPDATE';
+        } else {
+            $result['error'] = $model->insert($data);
+            $result['action'] = 'INSERT';
+        }
     } else {
-
         $result['fileType'] = $fileType;
         if ($model->exists($_GET['idBalAux'])) {
             $result['error'] = $model->update($data, 'bal_aux_id=' . $_GET['idBalAux']);

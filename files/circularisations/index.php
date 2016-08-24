@@ -1,8 +1,7 @@
 <?php if (isset($_SESSION['idMission']) && isset($_SESSION['id']) && isset($_GET['type']) && isset($index)): ?>
     <form class="circularisation-content" method="post" action="public/pages/frns_circularisation.php">
         <div class="section">
-            <div class="box-title"><?= strtoupper($_GET['type'] . 's') ?> : Comptes <?= $index ?></div>
-            <div class="box-subtitle">Sélectionner <?= $_GET['type'] ?> à circulariser</div>
+            <div class="box-title">Sélectionner <?= $_GET['type'] ?> à circulariser</div>
         </div>
         <?php $controller = new \App\Controllers\CircularisationController($index);
         $data = $controller->index($_SESSION['idMission']); ?>
@@ -35,19 +34,26 @@
             </footer>
         <?php endif; ?>
     </form>
+    <div class="footer">
+        <span class="item">Revue Analytique</span>
+        <span class="separator"> &gt; </span>
+        <span class="item mission"><?= $controller->getMissionName($_SESSION['idMission']); ?></span>
+        <span class="separator"> &gt; </span>
+        <span class="item">Circularisation <?= $_GET['type'] ?></span>
+    </div>
 
     <script type="application/javascript" src="public/js/ajax.js"></script>
     <script type="application/javascript">
         // Circularisation
-        (function (document, window) {
+        (function (document,window) {
             var $save = document.querySelector('#frns-save')
             if ($save) {
-                $save.addEventListener('click', function () {
+                $save.addEventListener('click',function () {
                     var selected = [];
 
                     var $inputs = document.querySelectorAll('input[type="checkbox"]:checked');
 
-                    for (var i = 0, length = $inputs.length; i < length; i++) {
+                    for (var i = 0,length = $inputs.length; i < length; i++) {
                         var row = $inputs[i].parentNode.parentNode;
                         selected.push(row.getAttribute('id'));
                     }
@@ -57,20 +63,19 @@
                             + encodeURIComponent(JSON.stringify(selected));
                         console.log(url);
                         window.location.href = url;
-                    }
-                    else {
+                    } else {
                         alert('Vous devriez sélectionner au moins un element à circulariser');
                     }
                 });
             }
 
-            document.querySelector('#frns-back').addEventListener('click', function () {
+            document.querySelector('#frns-back').addEventListener('click',function () {
                 console.log(window.history);
                 if (window.history) {
                     window.history.back();
                 }
             });
-        })(document, window);
+        })(document,window);
     </script>
 <?php else: ?>
     <div class="box">

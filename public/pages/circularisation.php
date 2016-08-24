@@ -18,9 +18,6 @@
     <form class="circularisation-content" action="../../index.php?">
         <div class="section">
             <div class="box-title">
-                <?= strtoupper($_GET['type']) . 'S : Comptes ' . $type[$_GET['type']] ?>
-            </div>
-            <div class="box-subtitle">
                 Circularisation des <?= $_GET['type'] ?>s
             </div>
         </div>
@@ -40,7 +37,13 @@
             </div>
         </footer>
     </form>
-
+    <div class="footer">
+        <span class="item">Revue Analytique</span>
+        <span class="separator"> &gt; </span>
+        <span class="item mission"><?= $controller->getMissionName($_SESSION['idMission']); ?></span>
+        <span class="separator"> &gt; </span>
+        <span class="item">Circularisation <?= $_GET['type'] ?></span>
+    </div>
     <script type="application/javascript" src="../js/ajax.js"></script>
     <script type="application/javascript">
 
@@ -88,8 +91,7 @@
                                 }
                             });
                             request.send(null);
-                        }
-                        else {
+                        } else {
                             window.alert('Vous devriez remplir tous les champs');
                         }
                     }

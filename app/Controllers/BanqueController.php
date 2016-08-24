@@ -8,8 +8,6 @@
 
 namespace App\Controllers;
 
-
-use App\Helpers\Debugger;
 use App\Helpers\FormHelper;
 use App\Model\BanqueModel;
 
@@ -60,9 +58,9 @@ class BanqueController extends Controller
                 $rows .= FormHelper::surround($result->IMPORT_INTITULES, 'td');
                 $rows .= FormHelper::surround($result->IMPORT_SOLDE, 'td');
                 $rows .= FormHelper::surround('<input type="text" value="" style="margin: 0 ;">', 'td');
-                $rows .= FormHelper::surround('<input type="text" value="" style="margin: 0 ;">', 'td');
+                $rows .= FormHelper::surround('<input type="text" style="margin: 0 ;">', 'td');
                 $rows .= FormHelper::surround('<input type="button" value="Génerer" style="margin: 0;" onclick="generateCircularisation(this, 0)">', 'td');
-
+                $rows .= FormHelper::surround('<a href="#"><img src="../img/thumbs-word.png" style="width: 32px; height: 32px;" /></a>', 'td');
                 $table .= FormHelper::surround($rows, 'tr', array('id' => $result->IMPORT_ID));
             }
 
@@ -72,4 +70,10 @@ class BanqueController extends Controller
         }
         return false;
     }
+
+    public function getMissionName($idMission)
+    {
+        return $this->model->getMission($idMission)->ENTREPRISE_DENOMINATION_SOCIAL;
+    }
+
 }

@@ -8,6 +8,8 @@
 
 namespace App\Model;
 
+use App\Helpers\Debugger;
+
 class CircularisationModel extends Model
 {
 
@@ -43,14 +45,37 @@ class CircularisationModel extends Model
 
     /**
      * @param int $idBalAux
+     * @param array $where
+     * @param array $filter
      * @return bool
      */
-    public function exists($idBalAux = 0)
+    public function exists($idBalAux = 0, $where = array(), $filter = array())
     {
-        $sql = "SELECT COUNT(bal_aux_id) as rows FROM tab_circularisation_fichier WHERE bal_aux_id = $idBalAux";
-        $result = $this->database->query($sql);
-        return $result && $result[0]->rows > 0;
+        $sql = "SELECT bal_aux_id as rows FROM tab_circularisation_fichier WHERE bal_aux_id = $idBalAux";
+
+        if (!empty($where)) {
+            $sql .= " AND " . implode(' AND ', $where);
+        }
+
+        if (!empty($filter)) {
+            $sql .= " AND " . $this->normalize($filter);
+        }
+
+        $result = $this->database->query($sql, true);
+
+        return ($result && $result->rows > 0) ? $result->rows : false;
     }
+
+    public function existByName($type, $name)
+    {
+        $sql = "SELECT idFile
+                FROM tab_circularisation_fichier 
+                WHERE fileCategory LIKE '%$type%' AND fileDestName LIKE '%$name%'";
+        $result = $this->database->query($sql, true);
+
+        return ($result && $result->idFile !== '') ? $result->idFile : 0;
+    }
+
 
     /**
      * @param $idMission
@@ -87,7 +112,15 @@ class CircularisationModel extends Model
     public function getDateLimite($idMission)
     {
         $sql = "SELECT MISSION_DATE_CLOTURE FROM tab_mission WHERE MISSION_ID=$idMission";
-        return $this->database->query($sql)[0]->MISSION_DATE_CLOTURE;
+        return $this->database->query($sql, true)->MISSION_DATE_CLOTURE;
     }
 
+    public function getMission($idMission)
+    {
+        $sql = "SELECT tab_entreprise.* FROM tab_mission
+                INNER JOIN tab_entreprise
+                ON tab_mission.ENTREPRISE_ID=tab_entreprise.ENTREPRISE_ID
+                WHERE tab_mission.MISSION_ID=$idMission";
+        return $this->database->query($sql, true);
+    }
 }

@@ -63,6 +63,16 @@
         </div>
     </footer>
 </form>
+
+
+<div class="footer">
+    <span class="item">Revue Analytique</span>
+    <span class="separator"> &gt; </span>
+    <span class="item mission"><?= $controller->getMissionName($_SESSION['idMission']); ?></span>
+    <span class="separator"> &gt; </span>
+    <span class="item">Circularisation <?= $_GET['type'] ?></span>
+</div>
+
 <div class="floating" onclick="cloneAvocat(this)">+</div>
 <script type="application/javascript" src="public/js/ajax.js"></script>
 <script type="application/javascript">
@@ -131,5 +141,13 @@
                 alert('Vous devriez remplir tous les champs. Merci!');
             }
         }
+
+        document.querySelector('#frns-back').addEventListener('click', function () {
+            console.log(window.history);
+            if (window.history) {
+                window.history.back();
+            }
+        });
+
     })(window, document);
 </script>

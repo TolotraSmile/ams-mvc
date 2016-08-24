@@ -40,4 +40,13 @@ class BanqueModel extends Model
 
         return $this->database->query($sql);
     }
+
+    public function getMission($idMission)
+    {
+        $sql = "SELECT tab_entreprise.* FROM tab_mission
+                INNER JOIN tab_entreprise
+                ON tab_mission.ENTREPRISE_ID=tab_entreprise.ENTREPRISE_ID
+                WHERE tab_mission.MISSION_ID=$idMission";
+        return $this->database->query($sql, true);
+    }
 }

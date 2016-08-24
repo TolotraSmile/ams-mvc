@@ -1,7 +1,7 @@
 <form class="circularisation-content" style="margin-bottom: 80px">
     <div class="section">
         <div class="box-title">
-            AVOCATS : Comptes 42
+            Sélectionner avocat à circulariser
         </div>
     </div>
     <div class="section">
@@ -18,7 +18,6 @@
                     </tr>
                     </thead>
                     <tbody>
-
                     <?php $controller = new \App\Controllers\CircularisationController(44); ?>
                     <?php foreach ($controller->getAvocats($_SESSION['idMission']) as $item): ?>
                         <tr>
@@ -40,7 +39,6 @@
                                 </a>
                             </td>
                         </tr>
-
                     <?php endforeach; ?>
                     <tr id="prototypeAvocat">
                         <td><input type="text" value="" style="margin: 0 ;" title="name"></td>
@@ -65,12 +63,22 @@
         </div>
     </footer>
 </form>
-<div class="floating" onclick="cloneAvocat(this)">+</div>
+
+
+<div class="footer">
+    <span class="item">Revue Analytique</span>
+    <span class="separator"> &gt; </span>
+    <span class="item mission"><?= $controller->getMissionName($_SESSION['idMission']); ?></span>
+    <span class="separator"> &gt; </span>
+    <span class="item">Circularisation <?= $_GET['type'] ?></span>
+</div>
+
+<div class="floating" onclick="cloneAvocat()">+</div>
 <script type="application/javascript" src="public/js/ajax.js"></script>
 <script type="application/javascript">
     (function (window, document) {
 
-        window.cloneAvocat = function (element) {
+        window.cloneAvocat = function () {
             var $parent = document.querySelector('#prototypeAvocat');
             var $clone = $parent.cloneNode(true);
             $clone.setAttribute('id', '')
@@ -79,6 +87,7 @@
             if (button) {
                 button.remove();
             }
+
             var elements = $clone.querySelectorAll('input[type="text"]');
 
             for (var i = 0, length = elements.length; i < length; i++) {
@@ -98,8 +107,6 @@
 
             if ($name.value !== '' && $infos.value !== '') {
                 var request = window.getHttpRequest();
-
-                //console.log(request);
 
                 var url = "public/pages/frns_generate.php?name=" + $name.value + "&adresse=" + $infos.value + "&idBalAux=0&type=43";
                 console.log(url);
@@ -124,11 +131,18 @@
                     }
                 });
                 request.send(null);
-
             }
             else {
                 alert('Vous devriez remplir tous les champs. Merci!');
             }
         }
+
+        document.querySelector('#frns-back').addEventListener('click', function () {
+            console.log(window.history);
+            if (window.history) {
+                window.history.back();
+            }
+        });
+
     })(window, document);
 </script>
