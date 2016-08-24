@@ -8,6 +8,7 @@
 
 namespace App\Controllers;
 
+use App\Helpers\Debugger;
 use App\Helpers\FormHelper;
 use App\Model\BanqueModel;
 
@@ -25,9 +26,12 @@ class BanqueController extends Controller
         if ($data) {
             $headers = array('', 'Compte', 'Intitulé', 'Solde');
             $table = '';
+
+
             foreach ($data as $result) {
 
-                $rows = FormHelper::surround('<input type="checkbox" value="" style="margin: 0;"', 'td');
+                $checked = $result->idFile === null ? '' : ' checked';
+                $rows = FormHelper::surround('<input type="checkbox" value="" style="margin: 0;" ' . $checked . '>', 'td');
                 $rows .= FormHelper::surround($result->IMPORT_COMPTES, 'td');
                 $rows .= FormHelper::surround($result->IMPORT_INTITULES, 'td');
                 $rows .= FormHelper::surround($result->IMPORT_SOLDE, 'td');
@@ -57,10 +61,16 @@ class BanqueController extends Controller
                 $rows .= FormHelper::surround($result->IMPORT_COMPTES, 'td');
                 $rows .= FormHelper::surround($result->IMPORT_INTITULES, 'td');
                 $rows .= FormHelper::surround($result->IMPORT_SOLDE, 'td');
-                $rows .= FormHelper::surround('<input type="text" value="" style="margin: 0 ;">', 'td');
-                $rows .= FormHelper::surround('<input type="text" style="margin: 0 ;">', 'td');
+                $rows .= FormHelper::surround('<input type="text" value="' . $result->fileDestName . '" style="margin: 0 ;">', 'td');
+                $rows .= FormHelper::surround('<input type="text" style="margin: 0 ;" value="' . $result->fileDestCoord . '">', 'td');
                 $rows .= FormHelper::surround('<input type="button" value="Génerer" style="margin: 0;" onclick="generateCircularisation(this, 0)">', 'td');
-                $rows .= FormHelper::surround('<a href="#"><img src="../img/thumbs-word.png" style="width: 32px; height: 32px;" /></a>', 'td');
+                $filename = '#';
+                $display = 'none';
+                if ($result->fileName !== null && file_exists($_SERVER['DOCUMENT_ROOT'] . $result->fileName)) {
+                    $filename = $result->fileName;
+                    $display = 'block';
+                }
+                $rows .= FormHelper::surround('<a href="' . $filename . '"><img src="../img/thumbs-word.png" style="width: 32px; height: 32px; display: ' . $display . ';"/></a>', 'td');
                 $table .= FormHelper::surround($rows, 'tr', array('id' => $result->IMPORT_ID));
             }
 

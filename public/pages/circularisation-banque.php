@@ -78,7 +78,7 @@
 
                     if ($name != '' && $adresse != '') {
                         var request = window.getHttpRequest();
-                        var url = 'frns_generate.php?name=' + $name + '&adresse=' + $adresse + '&idBalAux=' + $idBalAux + "&type=" + type;
+                        var url = 'frns_generate.php?name=' + $name + '&adresse=' + $adresse + '&idBalAux=' + $idBalAux + '&type=42';
 
                         console.log(url);
 

@@ -43,7 +43,6 @@ class Model
         $values = $data['values'];
 
         $sql = "INSERT INTO $this->tableName ($columns) VALUES ($values)";
-
         return $this->database->query($sql);
     }
 
@@ -69,7 +68,7 @@ class Model
         return false;
     }
 
-    private function implodeArray($data)
+    protected function implodeArray($data)
     {
         $values = array();
         foreach (array_values($data) as $value) {

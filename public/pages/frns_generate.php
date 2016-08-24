@@ -50,6 +50,7 @@ if (isset($_GET['name']) && isset($_GET['adresse']) && isset($_GET['idBalAux']))
 
 if ($result && $result['error'] !== true) {
 
+    $result['id'] = $_GET['idBalAux'];
     // Insert data into database
     $data = array(
         'fileName' => str_replace('\\', '/', $result['result']),
@@ -70,6 +71,20 @@ if ($result && $result['error'] !== true) {
             $result['error'] = $model->insert($data);
             $result['action'] = 'INSERT';
         }
+    }
+    if ($fileType == 'banque') {
+        $data['banque_id'] = $_GET['idBalAux'];
+        $data['bal_aux_id'] = 0;
+
+        $modelBanque = new \App\Model\BanqueModel();
+        $result['fileType'] = $fileType;
+        if ($modelBanque->exists($_GET['idBalAux'])) {
+            $result['error'] = $model->update($data, 'banque_id=' . $_GET['idBalAux']);
+            $result['action'] = 'UPDATE';
+        } else {
+            $result['error'] = $model->insert($data);
+            $result['action'] = 'INSERT';
+        }
     } else {
         $result['fileType'] = $fileType;
         if ($model->exists($_GET['idBalAux'])) {
@@ -80,6 +95,8 @@ if ($result && $result['error'] !== true) {
             $result['action'] = 'INSERT';
         }
     }
+
+
     header($result['result'], false, 200);
 
 } else {
